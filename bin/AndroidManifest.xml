@@ -26,6 +26,14 @@
             android:name="de.leichten.schlenkerapp.main.MainMenue"
             android:label="@string/title_activity_main_menue" >
         </activity>
+        <activity
+            android:name="de.leichten.schlenkerapp.main.PartieActivity"
+            android:label="@string/title_activity_partie" >
+        </activity>
     </application>
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>
