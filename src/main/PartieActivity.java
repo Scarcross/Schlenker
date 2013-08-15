@@ -1,4 +1,4 @@
-package de.leichten.schlenkerapp.main;
+package main;
 
 import java.util.List;
 

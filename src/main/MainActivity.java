@@ -1,4 +1,4 @@
-package de.leichten.schlenkerapp.main;
+package main;
 
 import de.leichten.schlenkerapp.R;
 import android.os.Bundle;
