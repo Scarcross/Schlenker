@@ -53,8 +53,7 @@ public class PartieActivity extends Activity {
 
 		if (pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
 
-			Intent i = new Intent(
-					android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+			Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 			i.putExtra(MediaStore.EXTRA_OUTPUT, FileContentProvider.CONTENT_URI);
 			startActivityForResult(i, REQUEST_CODE);
 
@@ -71,15 +70,16 @@ public class PartieActivity extends Activity {
 
 		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
 
-			File out = new File(getFilesDir(), "newImage.jpg");
+	        File out = new File(getFilesDir(), "newImage.jpg");
 
 			if (!out.exists()) {
 				Toast.makeText(getBaseContext(),"Error while capturing image", Toast.LENGTH_LONG).show();
 				return;
 			}
+			
 			Bitmap mBitmap = BitmapFactory.decodeFile(out.getAbsolutePath());
 			imageView.setImageBitmap(mBitmap);
-
+			
 		}
 
 	}

@@ -24,23 +24,21 @@ public class FileContentProvider extends ContentProvider {
 	}
 
 	@Override
-	public boolean onCreate() {
-		try {
+	 public boolean onCreate() {
 
-			File mFile = new File(getContext().getFilesDir(), "newImage.jpg");
+        try {
+            File mFile = new File(getContext().getFilesDir(), "newImage.jpg");
+            if(!mFile.exists()) {
+                mFile.createNewFile();
+            }
+            getContext().getContentResolver().notifyChange(CONTENT_URI, null);
+            return (true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
 
-			if (!mFile.exists()) {
-				mFile.createNewFile();
-			}
-			getContext().getContentResolver().notifyChange(CONTENT_URI, null);
-			return (true);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-
-		}
-
-	}
+    }
 
 	@Override
 	public String getType(Uri uri) {
@@ -60,8 +58,7 @@ public class FileContentProvider extends ContentProvider {
 	@Override
 	public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
 		//TODO: check if sd card is inserted
-		File stdpath = new File(Environment.getExternalStorageDirectory()+"/pictures");
-		File f = new File(stdpath, "newImage.jpg");
+        File f = new File(getContext().getFilesDir(), "newImage.jpg");
 		
 		if (f.exists()) {
 			return (ParcelFileDescriptor.open(f,ParcelFileDescriptor.MODE_READ_WRITE));
