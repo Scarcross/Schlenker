@@ -1,46 +1,60 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/LinearLayout1"
+    android:id="@+id/main_menu_back"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainMenue" >
 
-    <Button
-        android:id="@+id/button_partie"
+    <ImageView
+        android:id="@+id/SchlenkerLogo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:src="@drawable/logo" />
+
+    <LinearLayout
         style="@style/AppTheme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Partiebilder aufnehmen"
-        android:onClick="buttonClicked" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin" >
 
-    <Button
-        android:id="@+id/button_artikel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Artikelbilder aufnehmen" />
+        <Button
+            android:id="@+id/button_partie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="buttonClicked"
+            android:text="@string/record_partie" />
 
-    <Button
-        android:id="@+id/button_letzteVorgaenge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Letzte Vorgänge" />
+        <Button
+            android:id="@+id/button_artikel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/record_artikelbild" />
 
-    <Button
-        android:id="@+id/button_einstellungen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Einstellungen" />
+        <Button
+            android:id="@+id/button_letzteVorgaenge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/last_process" />
 
-    <Button
-        android:id="@+id/button_beenden"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Beenden" />
+        <Button
+            android:id="@+id/button_einstellungen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/button_beenden"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/exit" />
+    </LinearLayout>
+
+</RelativeLayout>

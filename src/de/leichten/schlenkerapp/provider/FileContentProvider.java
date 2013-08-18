@@ -1,4 +1,4 @@
-package provider;
+package de.leichten.schlenkerapp.provider;
 
 import java.io.File;
 import java.io.FileNotFoundException;

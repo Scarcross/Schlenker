@@ -1,4 +1,4 @@
-package main;
+package de.leichten.schlenkerapp.main;
 
 import utils.SaveFile;
 import utils.Utils;
@@ -8,10 +8,9 @@ import java.io.InputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import provider.FileContentProvider;
 import android.graphics.BitmapFactory;
-
 import de.leichten.schlenkerapp.R;
+import de.leichten.schlenkerapp.provider.FileContentProvider;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;

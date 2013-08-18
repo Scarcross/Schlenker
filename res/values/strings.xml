@@ -6,5 +6,11 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_main_menue">MainMenue</string>
     <string name="title_activity_partie">PartieActivity</string>
+    <string name="record_partie">Partiebilder aufnehmen</string>
+    <string name="record_artikelbild">Artikelbilder aufnehmen</string>
+    <string name="last_process">Letzte Vorgänge</string>
+    <string name="settings">Einstellungen</string>
+    <string name="exit">Beenden</string>
+    <string name="uploadfile_service">UploadFile Service</string>
 
 </resources>
