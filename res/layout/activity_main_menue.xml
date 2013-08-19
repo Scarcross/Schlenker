@@ -29,7 +29,8 @@
             style="@style/button_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="buttonClicked"
+            android:layout_marginTop="10dip"
+            android:layout_marginBottom="10dip"
             android:text="@string/record_partie" />
 
         <Button

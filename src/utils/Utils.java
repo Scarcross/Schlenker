@@ -13,6 +13,7 @@ import android.util.Log;
 
 public class Utils {
 
+	public static final String SHARED_PREF_NAME = "de.leichten.schlenkerapp";
 	
 	public static boolean isIntentAvailable(Context context, String action){
 	    final PackageManager packageManager = context.getPackageManager();

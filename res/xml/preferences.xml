@@ -1,63 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <PreferenceCategory
-        android:key="pref_cat_partie"
-        android:title="Partiebild" >
-        <EditTextPreference
-            android:defaultValue="FTP-Upload Pfad"
-            android:summary="FTP-Upload Pfad"
-            android:title="FTP-Upload Pfad" />
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:summary="Upload auf Ordner im Netzwerk"
-            android:title="Upload" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:summary="Kopieren in Ordner auf Smartphone"
-            android:title="Kopieren" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:summary="Nach erfolgreichem Upload auf Smartphone löschen"
-            android:title="Löschen" />
+        
+    <PreferenceCategory 
+        android:key=""
+        android:title="Partiebild"
+        >
+        <Preference 
+            android:key="@string/key_partie_ftp_upload"
+            android:title="FTP-Upload Pfad"
+            android:persistent="true"
+            android:layout="@layout/preferenceedittext"
+            />
+        <EditTextPreference 
+            android:key="@string/key_partie_upload_network"
+            android:title="Upload auf Ordner im Netzwerk"
+            android:persistent="true"
+            android:layout="@layout/preferenceedittext"
+            />
+        <EditTextPreference 
+            android:key="@string/key_partie_copy_sd"
+            android:title="Kopieren in Ordner auf SD-Karte/Smartphone"
+            android:persistent="true"
+            android:layout="@layout/preferenceedittext"
+            />
+        
+        <CheckBoxPreference 
+            android:key="@string/key_partie_delete_pictures"
+            android:title="nach erfolgreichem Upload Bilder auf Smartphone löschen"
+            
+            android:layout="@layout/preferenceedittext"
+            />
     </PreferenceCategory>
-    <PreferenceCategory
-        android:key="pref_cat_artikel_standard"
-        android:title="Artikel Standardbild" >
-        
-        <EditTextPreference
-            android:defaultValue="example Text"
-            android:key="ftp_address"
-            android:summary="this is a summary"
-            android:title="ftp address" />
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:summary="Upload auf Ordner im Netzwerk"
-            android:title="Upload" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:summary="Kopieren in Ordner auf Smartphone"
-            android:title="Kopieren" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:summary="Nach erfolgreichem Upload auf Smartphone löschen"
-            android:title="Löschen" />
+    <PreferenceCategory 
+        android:key=""
+        android:title="Atrikel-Standardbild"
+        >
+        <EditTextPreference 
+            android:key="@string/key_art_ftp_upload"
+            android:title="FTP-Upload Pfad"
+            />
+        <EditTextPreference 
+            android:key="@string/key_art_upload_network"
+            android:title="Upload auf Ordner im Netzwerk"
+            />
+        <EditTextPreference 
+            android:key="@string/key_art_copy_sd"
+            android:title="Kopieren in Ordner auf SD-Karte/Smartphone"
+            />
+        <CheckBoxPreference 
+            android:key="@string/key_art_delete_pictures"
+            android:title="nach erfolgreichem Upload Bilder auf Smartphone löschen"
+            />
     </PreferenceCategory>
     
-    <PreferenceCategory
-        android:key="pref_cat_other"
-        android:title="Sonstige Einstellungen" >
-        <EditTextPreference
-            android:defaultValue="FTP-Upload Pfad"
-            android:key="ftp_address"
-            android:summary="FTP-Upload Pfad"
-            android:title="FTP-Upload Pfad" />
-		
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="pref_sync" />
-    </PreferenceCategory>
-
 </PreferenceScreen>

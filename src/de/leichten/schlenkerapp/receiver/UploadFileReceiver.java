@@ -15,13 +15,14 @@ public class UploadFileReceiver extends BroadcastReceiver {
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.i(TAG, "Switched");
 		Bundle extras = intent.getExtras();
 		NetworkInfo info = extras.getParcelable("networkInfo");
-		
 		State state = info.getState();
+		Log.i(TAG, "Switched to " + state.toString());
 		if(state == State.CONNECTED){
-			Intent serviceStarer = new Intent();
+			Intent serviceStarer = new Intent("de.leichten.schlenkerapp.services.UploadFileService");
+			serviceStarer.setClass(context, UploadFileReceiver.class);
+			context.startService(serviceStarer);
 			
 		}else if(state == State.CONNECTING){
 			

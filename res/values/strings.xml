@@ -17,5 +17,15 @@
     
     <string name="uploadfile_service">UploadFile Service</string>
     <string name="title_activity_qr">QRActivity</string>
+    
+    <string name="key_art_copy_sd">ART_COPY_SD</string>
+    <string name="key_art_upload_network">ART_UPLOAD_NETWORK</string>
+    <string name="key_art_ftp_upload">ART_FTP_UPLOAD</string>
+    <string name="key_art_delete_pictures">ART_DELETE_PICS</string>
+    
+    <string name="key_partie_copy_sd">PARTIE_COPY_SD</string>
+    <string name="key_partie_upload_network">PARTIE_UPLOAD_NETWORK</string>
+    <string name="key_partie_ftp_upload">PARTIE_ART_FTP_UPLOAD</string>
+    <string name="key_partie_delete_pictures">PARTIE_DELETE_PICS</string>
 
 </resources>

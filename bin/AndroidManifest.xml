@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.leichten.schlenkerapp"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0" 
+    >
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -83,11 +84,17 @@
                 <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE" />
             </intent-filter>
         </receiver>
+<<<<<<< Upstream, based on origin/HEAD
         
         
         
         
         
+=======
+        <service android:name=".services.UploadFileService"></service>
+        <activity android:name=".main.SettingsActivity"></activity>
+        <activity android:name=".net.FTPUploadChooseAcitvity"></activity>
+>>>>>>> 4d39b4c Added all the Preferences and also modified GUI. Registered all receivers, added the apache commons.net libary to the project.
     </application>
 
 </manifest>
