@@ -12,5 +12,6 @@
     <string name="settings">Einstellungen</string>
     <string name="exit">Beenden</string>
     <string name="uploadfile_service">UploadFile Service</string>
+    <string name="title_activity_qr">QRActivity</string>
 
 </resources>

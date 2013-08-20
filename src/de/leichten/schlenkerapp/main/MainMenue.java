@@ -3,6 +3,7 @@ package de.leichten.schlenkerapp.main;
 import de.leichten.schlenkerapp.R;
 import de.leichten.schlenkerapp.R.layout;
 import de.leichten.schlenkerapp.R.menu;
+import de.leichten.schlenkerapp.barcode.QRActivity;
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.app.Activity;
@@ -35,23 +36,31 @@ public class MainMenue extends Activity {
 	public void buttonClicked(View view) {
 		Intent intent = null;
 
-		switch (view.getId()) {
-		case R.id.button_partie:
+		int id = view.getId();
+		if (id == R.id.button_partie) {
 			intent = new Intent(this, PartieActivity.class);
-			break;
-		case R.id.button_artikel:
-			break;
-		case R.id.button_letzteVorgaenge:
-			break;
-		case R.id.button_einstellungen:
-			break;
-		case R.id.button_beenden:
-			break;
-		default:
-			break;
+		} else if (id == R.id.button_artikel) {
+			intent = new Intent("com.google.zxing.client.android.SCAN");
+			intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+		} else if (id == R.id.button_letzteVorgaenge) {
+		} else if (id == R.id.button_einstellungen) {
+		} else if (id == R.id.button_beenden) {
+		} else {
 		}
 		if (intent != null)
-			startActivity(intent);
+			startActivityForResult(intent, 0);
+	}
+
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		if (requestCode == 0) {
+			if (resultCode == RESULT_OK) {
+				String contents = intent.getStringExtra("SCAN_RESULT");
+				String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+				// Handle successful scan
+			} else if (resultCode == RESULT_CANCELED) {
+				// Handle cancel
+			}
+		}
 	}
 
 	private void startAnimation() {
