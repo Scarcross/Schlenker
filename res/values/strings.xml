@@ -3,7 +3,7 @@
 
     <string name="app_name">SchlenkerApp</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world" translatable="false">Hello world!</string>
     <string name="title_activity_main_menue">MainMenue</string>
     <string name="title_activity_partie">PartieActivity</string>
     <string name="record_partie">Partiebilder aufnehmen</string>

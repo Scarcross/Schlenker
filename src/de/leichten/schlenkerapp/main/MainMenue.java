@@ -40,28 +40,21 @@ public class MainMenue extends Activity {
 		if (id == R.id.button_partie) {
 			intent = new Intent(this, PartieActivity.class);
 		} else if (id == R.id.button_artikel) {
-			intent = new Intent("com.google.zxing.client.android.SCAN");
-			intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+			
 		} else if (id == R.id.button_letzteVorgaenge) {
+			intent = new Intent(this, QRActivity.class);
+			
 		} else if (id == R.id.button_einstellungen) {
+			
 		} else if (id == R.id.button_beenden) {
+			
 		} else {
 		}
 		if (intent != null)
-			startActivityForResult(intent, 0);
+			startActivity(intent);
 	}
 
-	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		if (requestCode == 0) {
-			if (resultCode == RESULT_OK) {
-				String contents = intent.getStringExtra("SCAN_RESULT");
-				String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-				// Handle successful scan
-			} else if (resultCode == RESULT_CANCELED) {
-				// Handle cancel
-			}
-		}
-	}
+	
 
 	private void startAnimation() {
 

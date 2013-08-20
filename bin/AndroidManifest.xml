@@ -52,12 +52,7 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name="de.leichten.schlenkerapp.barcode.QRActivity"
-            android:label="@string/title_activity_qr" >
-        </activity>
        
-        
         <activity
             android:name="com.google.zxing.client.android.CaptureActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -66,12 +61,18 @@
             android:windowSoftInputMode="stateAlwaysHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="com.google.zxing.client.android.SCAN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="de.leichten.schlenkerapp.barcode.QRActivity"
+            android:label="@string/title_activity_qr" >
         </activity>
     </application>
 
