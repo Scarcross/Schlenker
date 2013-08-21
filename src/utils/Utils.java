@@ -1,19 +1,18 @@
 package utils;
 
-import java.io.File;
 import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.net.Uri;
-import android.os.Environment;
-import android.util.Log;
 
 public class Utils {
-
-	public static final String SHARED_PREF_NAME = "de.leichten.schlenkerapp";
+	
+	public static final String SHARED_PREF_UPLOAD_NAME = "SCHLENKERAPP_UPLOAD_SETTINGS";
+	
+	public static final String SHARED_PREF_NAME = "SCHLENKERAPP_SETTINGS";
+	
 	
 	public static boolean isIntentAvailable(Context context, String action){
 	    final PackageManager packageManager = context.getPackageManager();

@@ -4,28 +4,35 @@
         android:title="FTP Einstellungen"
         >
         <EditTextPreference
-			android:title="Name"
-			android:key=""
-            />
-        <EditTextPreference 
-            android:title="Proxy"
-            android:key=""
+			android:title="Address"
+			android:key="@string/ftp_address"
             />
 		<EditTextPreference 
 		    android:title="Username"
-		    android:key=""
+		    android:key="@string/ftp_username"
 		    />        
         <EditTextPreference
             android:title="Password"
-            android:key=""
+            android:key="@string/ftp_password"
+            android:persistent="true"
+            android:inputType="textPassword"
             />
 		<ListPreference 
 		    android:title="Connection Type"
-		    android:key=""
+		    android:key="@string/ftp_conntype"
 		    android:entries="@array/connectiontypes"
 		    android:entryValues="@array/connectiontypes"
-		    />		
-        
+		    android:defaultValue="TLS"
+		    />
+        <EditTextPreference
+            android:title="Proxy"
+            android:key="@string/ftp_proxy"
+            />
+        <CheckBoxPreference 
+            android:title="Automatisch Uploaden"
+            android:key="@string/ftp_activate"
+            android:defaultValue="false"
+            />
     </PreferenceCategory>
     
 

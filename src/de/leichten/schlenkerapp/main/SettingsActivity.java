@@ -1,24 +1,17 @@
 package de.leichten.schlenkerapp.main;
 
-import de.leichten.schlenkerapp.R;
-import de.leichten.schlenkerapp.net.FTPUploadChooseAcitvity;
+import static utils.Utils.SHARED_PREF_NAME;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
-import android.media.audiofx.BassBoost.Settings;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import de.leichten.schlenkerapp.R;
+import de.leichten.schlenkerapp.net.FTPUploadSettingsAcitvity;
 
 public class SettingsActivity extends PreferenceActivity {
 
@@ -35,6 +28,7 @@ public class SettingsActivity extends PreferenceActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getPreferenceManager().setSharedPreferencesName(SHARED_PREF_NAME);
 		addPreferencesFromResource(R.xml.preferences);
 		setContentView(R.layout.preferenceactivity);
 		ListView list = (ListView) findViewById(android.R.id.list);
@@ -47,7 +41,7 @@ public class SettingsActivity extends PreferenceActivity {
 			
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				Intent i = new Intent(getBaseContext(), FTPUploadChooseAcitvity.class);
+				Intent i = new Intent(getBaseContext(), FTPUploadSettingsAcitvity.class);
 				preference.setIntent(i);
 				return false;
 			}
@@ -57,7 +51,7 @@ public class SettingsActivity extends PreferenceActivity {
 			
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				preference.setIntent(new Intent(getBaseContext(),FTPUploadChooseAcitvity.class));
+				preference.setIntent(new Intent(getBaseContext(),FTPUploadSettingsAcitvity.class));
 				return false;
 			}
 		});

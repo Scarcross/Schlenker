@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.leichten.schlenkerapp"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0" 
+    >
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -80,14 +81,12 @@
 
         <receiver android:name="de.leichten.schlenkerapp.receiver.UploadFileReceiver" >
             <intent-filter>
-                <action android:name="android.net.wifi.supplicant.CONNECTION_CHANGE" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
-        </receiver>
+        </receiver>     
         
         
-        
-        
-        
+        <activity android:name=".net.FTPUploadSettingsAcitvity"></activity>
     </application>
 
 </manifest>
