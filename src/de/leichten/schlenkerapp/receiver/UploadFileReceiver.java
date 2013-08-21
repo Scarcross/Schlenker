@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.NetworkInfo.State;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -17,22 +16,18 @@ public class UploadFileReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		boolean isactive = context.getSharedPreferences(
-				SHARED_PREF_UPLOAD_NAME, 0).getBoolean(
-				context.getResources().getString(R.string.ftp_activate), false);
+		boolean isactive = context.getSharedPreferences(SHARED_PREF_UPLOAD_NAME, 0).getBoolean(context.getResources().getString(R.string.ftp_activate), false);
 		if (isactive) {
-			Bundle extras = intent.getExtras();
-
-			NetworkInfo info = extras
-					.getParcelable(ConnectivityManager.EXTRA_NETWORK_INFO);
-			State state = info.getState();
-			Log.i(TAG, "Switched to " + state.toString());
-			if (state == State.CONNECTED) {
-				Intent serviceStarter = new Intent(
-						"de.leichten.schlenkerapp.services.UploadFileService");
+		
+			ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+			
+			Log.i(TAG, "Switched to " + mWifi.toString());
+			if (mWifi.isConnected()) {
+				Intent serviceStarter = new Intent("de.leichten.schlenkerapp.services.UploadFileService");
 				serviceStarter.setClass(context, UploadFileReceiver.class);
 				context.startService(serviceStarter);
-			} else if (state == State.DISCONNECTED) {
+			} else if (false) {
 
 			}
 		}
