@@ -4,7 +4,7 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Light">
+    <style name="AppBaseTheme" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen">
         
         <!--
             Theme customizations available in newer API levels can go in
@@ -16,9 +16,12 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-        <item name="android:buttonStyle">@style/button_style</item>
         <item name="android:windowFrame">@null</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
     </style>
+    
+   
     <style name="button_style" parent="android:style/Widget.Button">
        <item name="android:textSize">15sp</item>
        <item name="android:textStyle">bold</item>
@@ -31,7 +34,20 @@
        <item name="android:background">@drawable/button_style</item>
        <item name="android:padding">10dip</item>
     </style>
+   
+    <style name="button_style_bottom" parent="android:style/Widget.Button">
+       <item name="android:textSize">20sp</item>
+       <item name="android:textStyle">bold</item>
+       <item name="android:textColor">#FFFFFF</item>
+       <item name="android:gravity">center</item>
+       <item name="android:shadowColor">#000000</item>
+       <item name="android:shadowDx">1</item>
+       <item name="android:shadowDy">1</item>
+       <item name="android:shadowRadius">0.6</item>
+		<item name="android:background">@android:color/darker_gray</item>
+       <item name="android:padding">10dip</item>
+    </style>
     
-    
+   
 
 </resources>

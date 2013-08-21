@@ -35,16 +35,19 @@ public class MainMenue extends Activity {
 
 	public void buttonClicked(View view) {
 		Intent intent = null;
-
 		int id = view.getId();
+		
 		if (id == R.id.button_partie) {
 			intent = new Intent(this, PartieActivity.class);
+			
 		} else if (id == R.id.button_artikel) {
+			
 			
 		} else if (id == R.id.button_letzteVorgaenge) {
 			intent = new Intent(this, QRActivity.class);
 			
 		} else if (id == R.id.button_einstellungen) {
+			intent = new Intent(this, SettingsActivity.class);
 			
 		} else if (id == R.id.button_beenden) {
 			
@@ -57,7 +60,7 @@ public class MainMenue extends Activity {
 	
 
 	private void startAnimation() {
-
+		
 		View main_back = findViewById(R.id.main_menu_back);
 		Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fadein);
 		main_back.startAnimation(fadeIn);

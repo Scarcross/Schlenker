@@ -3,14 +3,18 @@
 
     <string name="app_name">SchlenkerApp</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world" translatable="false">Hello world!</string>
+  
     <string name="title_activity_main_menue">MainMenue</string>
     <string name="title_activity_partie">PartieActivity</string>
+    
+    
     <string name="record_partie">Partiebilder aufnehmen</string>
     <string name="record_artikelbild">Artikelbilder aufnehmen</string>
     <string name="last_process">Letzte Vorgänge</string>
     <string name="settings">Einstellungen</string>
     <string name="exit">Beenden</string>
+    
+    
     <string name="uploadfile_service">UploadFile Service</string>
     <string name="title_activity_qr">QRActivity</string>
 

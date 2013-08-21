@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/RelativeLayout1"
+    style="@style/AppTheme"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    style="@style/AppTheme"
     android:orientation="vertical" >
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:text="Button" />
 
     <ImageView
         android:id="@+id/imageView1"
@@ -19,5 +12,23 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/button1"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/btn_pictureOk"
+        style="@style/button_style_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="Bild Ok" />
+
+    <Button
+        android:id="@+id/btn_pictureBad"
+        style="@style/button_style_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="Bild verwerfen" />
 
 </RelativeLayout>

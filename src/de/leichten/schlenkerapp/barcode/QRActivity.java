@@ -1,5 +1,7 @@
 package de.leichten.schlenkerapp.barcode;
 
+import com.google.zxing.client.android.Intents.Scan;
+
 import de.leichten.schlenkerapp.R;
 import de.leichten.schlenkerapp.R.layout;
 import de.leichten.schlenkerapp.R.menu;
@@ -31,7 +33,8 @@ public class QRActivity extends Activity {
 	
 	private void startQRScan() {
 		Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-		intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+		intent.putExtra(Scan.FORMATS, "CODE_39,CODE_93,CODE_128,DATA_MATRIX,ITF,CODABAR,EAN_13,EAN_8,UPC_A,QR_CODE");
+		
 		startActivityForResult(intent, 0);
 	}
 
