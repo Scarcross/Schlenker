@@ -3,15 +3,35 @@
 
     <string name="app_name">SchlenkerApp</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world" translatable="false">Hello world!</string>
+  
     <string name="title_activity_main_menue">MainMenue</string>
     <string name="title_activity_partie">PartieActivity</string>
+    
+    
     <string name="record_partie">Partiebilder aufnehmen</string>
     <string name="record_artikelbild">Artikelbilder aufnehmen</string>
     <string name="last_process">Letzte Vorgänge</string>
     <string name="settings">Einstellungen</string>
     <string name="exit">Beenden</string>
+    
+    
     <string name="uploadfile_service">UploadFile Service</string>
     <string name="title_activity_qr">QRActivity</string>
+    
+    <string name="key_art_copy_sd">ART_COPY_SD</string>
+    <string name="key_art_upload_network">ART_UPLOAD_NETWORK</string>
+    <string name="key_art_ftp_upload">ART_FTP_UPLOAD</string>
+    <string name="key_art_delete_pictures">ART_DELETE_PICS</string>
+    
+    <string name="key_partie_copy_sd">PARTIE_COPY_SD</string>
+    <string name="key_partie_upload_network">PARTIE_UPLOAD_NETWORK</string>
+    <string name="key_partie_ftp_upload">PARTIE_ART_FTP_UPLOAD</string>
+    <string name="key_partie_delete_pictures">PARTIE_DELETE_PICS</string>
+    <string name="ftp_conntype">ftp_conntype</string>
+    <string name="ftp_password">ftp_password</string>
+    <string name="ftp_username">ftp_username</string>
+    <string name="ftp_proxy">ftp_proxy</string>
+    <string name="ftp_address">ftp_address</string>
+    <string name="ftp_activate">ftp_activate</string>
 
 </resources>
