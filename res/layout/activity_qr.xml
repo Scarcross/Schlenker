@@ -14,7 +14,24 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        
-        />
+        android:text="sample" />
+
+    <Button
+        android:id="@+id/btn_start_scan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/button_style"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="buttonClicked"
+        android:text="Barcode einlesen" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_QrResult"
+        android:layout_centerHorizontal="true"
+        android:text="sample" />
 
 </RelativeLayout>

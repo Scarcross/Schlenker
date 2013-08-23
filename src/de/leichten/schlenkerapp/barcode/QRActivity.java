@@ -1,27 +1,36 @@
 package de.leichten.schlenkerapp.barcode;
 
-import com.google.zxing.client.android.Intents.Scan;
 import de.leichten.schlenkerapp.R;
-import de.leichten.schlenkerapp.R.layout;
-import de.leichten.schlenkerapp.R.menu;
+
 import de.leichten.schlenkerapp.tasks.FinishingTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
 import android.widget.TextView;
 
 public class QRActivity extends Activity {
 
+	private static final String BC_CALLED = "BC_CALLED";
+	
 	TextView qrResult;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_qr);
-
+		
 		qrResult = (TextView) findViewById(R.id.textView_QrResult);
-		startQRScan();
+		
+		if (savedInstanceState != null) {
+			if (!savedInstanceState.getBoolean(BC_CALLED)) {
+				startQRScan();
+			}
+			
+		}else {
+			startQRScan();
+		}
 
 	}
 
@@ -30,15 +39,18 @@ public class QRActivity extends Activity {
 		getMenuInflater().inflate(R.menu.qr, menu);
 		return true;
 	}
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(BC_CALLED, true);
+	}
 
 	private void startQRScan() {
 		Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-		intent.putExtra("com.google.zxing.client.android.SCAN.SCAN_MODE",
-				"QR_CODE_MODE");
-		
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+		intent.addCategory(Intent.CATEGORY_DEFAULT);
 
-		
+		intent.putExtra("com.google.zxing.client.android.SCAN.SCAN_MODE","QR_CODE_MODE");
+
 		startActivityForResult(intent, 0);
 	}
 
@@ -61,4 +73,16 @@ public class QRActivity extends Activity {
 		finishingTask.execute(barcode);
 	}
 
+	public void buttonClicked(final View view) {
+		int id = view.getId();
+
+		switch (id) {
+		case R.id.btn_start_scan:
+			startQRScan();
+			break;
+		default:
+			break;
+		}
+		
+	}
 }

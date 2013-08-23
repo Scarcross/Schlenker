@@ -21,11 +21,12 @@ import android.widget.Toast;
 
 public class PartieActivity extends Activity {
 
+	private static final String CAM_CALLED = "CAM_CALLED";
 	private static final int REQUEST_CODE = 100;
+	private final String Tag = getClass().getName();
 
 	private ImageView imageView;
 	private Uri fileUri;
-	private final String Tag = getClass().getName();
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -37,8 +38,24 @@ public class PartieActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_partie);
+
 		imageView = (ImageView) findViewById(R.id.imageView1);
-		takeAPicture();
+
+		if (savedInstanceState != null) {
+			if (!savedInstanceState.getBoolean(CAM_CALLED)) {
+				takeAPicture();
+			}
+			
+		}else {
+			takeAPicture();
+		}
+
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(CAM_CALLED, true);
 	}
 
 	private void takeAPicture() {
@@ -96,21 +113,22 @@ public class PartieActivity extends Activity {
 		switch (id) {
 		case R.id.btn_pictureOk:
 			intent = new Intent(this, QRActivity.class);
-			//TODO maybe pass some data...
+			// TODO maybe pass some data...
 			startActivity(intent);
 			break;
 		case R.id.btn_pictureBad:
-			if(deleteRecentPicture()){
-				Toast.makeText(this, "Bild verworfen", Toast.LENGTH_SHORT).show();
+			if (deleteRecentPicture()) {
+				Toast.makeText(this, "Bild verworfen", Toast.LENGTH_SHORT)
+						.show();
 			}
 			backToMainScreen();
 			break;
 		default:
 			break;
 		}
-		
+
 	}
-	
+
 	private boolean deleteRecentPicture() {
 		File out = new File(getFilesDir(), "newImage.jpg");
 		return out.delete();
