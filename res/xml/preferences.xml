@@ -1,56 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-        
-    <PreferenceCategory 
-        android:key=""
-        android:title="Partiebild"
-        >
-        <Preference 
+
+    <PreferenceCategory
+        android:title="Partiebild" >
+        <Preference
             android:key="@string/key_partie_ftp_upload"
-            android:title="FTP-Upload Pfad"
             android:persistent="true"
-            android:layout="@layout/preferenceedittext"
-            />
-        <EditTextPreference 
+            android:summary="Der Pfad für einen FTP Upload"
+            android:title="FTP-Upload" />
+
+        <EditTextPreference
             android:key="@string/key_partie_upload_network"
-            android:title="Upload auf Ordner im Netzwerk"
             android:persistent="true"
-            android:layout="@layout/preferenceedittext"
-            />
-        <EditTextPreference 
+            android:summary="Upload auf einen Ordner im Netzwerk"
+            android:title="Netzwerk Upload" />
+        <EditTextPreference
             android:key="@string/key_partie_copy_sd"
-            android:title="Kopieren in Ordner auf SD-Karte/Smartphone"
             android:persistent="true"
-            android:layout="@layout/preferenceedittext"
-            />
-        
-        <CheckBoxPreference 
+            android:summary="Kopiert die Bilder auf die SD-Karte oder auch den internen Smartphone speicher"
+            android:title="Kopieren auf SD-Karte" />
+
+        <CheckBoxPreference
             android:key="@string/key_partie_delete_pictures"
-            android:title="nach erfolgreichem Upload Bilder auf Smartphone löschen"
-            
-            android:layout="@layout/preferenceedittext"
-            />
+            android:summary="Löscht nach erfolgreichem Upload die Bilder auf dem Smartphone"
+            android:title="Hochgeladene Bilder löschen" />
     </PreferenceCategory>
-    <PreferenceCategory 
+    <PreferenceCategory
         android:key=""
-        android:title="Atrikel-Standardbild"
-        >
-        <EditTextPreference 
+        android:title="Atrikel-Standardbild" >
+        <EditTextPreference
             android:key="@string/key_art_ftp_upload"
-            android:title="FTP-Upload Pfad"
-            />
-        <EditTextPreference 
+            android:summary="Der Pfad für einen FTP Upload"
+            android:title="FTP-Upload" />
+        <EditTextPreference
             android:key="@string/key_art_upload_network"
-            android:title="Upload auf Ordner im Netzwerk"
-            />
-        <EditTextPreference 
+            android:summary="Upload auf einen Ordner im Netzwerk"
+            android:title="Netzwerk Upload" />
+        <EditTextPreference
             android:key="@string/key_art_copy_sd"
-            android:title="Kopieren in Ordner auf SD-Karte/Smartphone"
-            />
-        <CheckBoxPreference 
+            android:summary="Kopiert die Bilder auf die SD-Karte oder auch den internen Smartphone speicher"
+            android:title="Kopieren auf SD-Karte" />
+
+        <CheckBoxPreference
             android:key="@string/key_art_delete_pictures"
-            android:title="nach erfolgreichem Upload Bilder auf Smartphone löschen"
-            />
+            android:summary="Löscht nach erfolgreichem Upload die Bilder auf dem Smartphone"
+            android:title="Hochgeladene Bilder löschen" />
     </PreferenceCategory>
-    
+
 </PreferenceScreen>

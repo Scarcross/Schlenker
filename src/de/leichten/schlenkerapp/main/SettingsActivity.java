@@ -3,6 +3,8 @@ package de.leichten.schlenkerapp.main;
 import static utils.Utils.SHARED_PREF_NAME;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
@@ -30,10 +32,9 @@ public class SettingsActivity extends PreferenceActivity {
 		super.onCreate(savedInstanceState);
 		getPreferenceManager().setSharedPreferencesName(SHARED_PREF_NAME);
 		addPreferencesFromResource(R.xml.preferences);
-		setContentView(R.layout.preferenceactivity);
 		ListView list = (ListView) findViewById(android.R.id.list);
-		// Change GUI
-		list.setDivider(new GradientDrawable(Orientation.LEFT_RIGHT, new int[]{getResources().getColor(R.color.limegreen),Color.WHITE,getResources().getColor(R.color.limegreen)}));
+		// Change divider of standard gui
+		list.setDivider(new ColorDrawable(Color.GRAY));
 		list.setDividerHeight(4);
 		
 		partie_ftp_up = findPreference(getResources().getString(R.string.key_partie_ftp_upload));
