@@ -23,30 +23,21 @@
     
    
     <style name="button_style" parent="android:style/Widget.Button">
-       <item name="android:textSize">15sp</item>
+       <item name="android:textSize">18sp</item>
        <item name="android:textStyle">bold</item>
        <item name="android:textColor">#FFFFFF</item>
        <item name="android:gravity">center</item>
-       <item name="android:shadowColor">#000000</item>
-       <item name="android:shadowDx">1</item>
-       <item name="android:shadowDy">1</item>
+       <item name="android:shadowColor">@android:color/black</item>
+       <item name="android:shadowDx">2</item>
+       <item name="android:shadowDy">2</item>
        <item name="android:shadowRadius">0.6</item>
        <item name="android:background">@drawable/button_style</item>
        <item name="android:padding">10dip</item>
+       <item name="android:layout_marginBottom">10dp</item>
+       
+       
     </style>
     
-   
-    <style name="button_style_bottom" parent="android:style/Widget.Button">
-       <item name="android:textSize">15sp</item>
-       <item name="android:textStyle">bold</item>
-       <item name="android:textColor">#FFFFFF</item>
-       <item name="android:gravity">center</item>
-       <item name="android:shadowColor">#000000</item>
-       <item name="android:shadowDx">1</item>
-       <item name="android:shadowDy">1</item>
-       <item name="android:shadowRadius">0.6</item>
-       <item name="android:background">@android:color/darker_gray</item>
-       <item name="android:padding">10dip</item>
-    </style>
 
+   
 </resources>

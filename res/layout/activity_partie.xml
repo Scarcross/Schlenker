@@ -10,25 +10,29 @@
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button1"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp" />
 
     <Button
         android:id="@+id/btn_pictureOk"
-        style="@style/button_style_bottom"
+        style="@style/button_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:onClick="buttonClicked"
+        android:layout_margin="10dp"
         android:text="Bild Ok" />
 
     <Button
         android:id="@+id/btn_pictureBad"
-        style="@style/button_style_bottom"
+        style="@style/button_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:onClick="buttonClicked"
+        android:layout_margin="10dp"
         android:text="Bild verwerfen" />
 
 </RelativeLayout>

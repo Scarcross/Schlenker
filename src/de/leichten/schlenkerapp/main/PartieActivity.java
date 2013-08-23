@@ -1,19 +1,13 @@
 package de.leichten.schlenkerapp.main;
 
-import utils.SaveFile;
-import utils.Utils;
-
 import java.io.File;
-import java.io.InputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import android.graphics.BitmapFactory;
 import de.leichten.schlenkerapp.R;
+import de.leichten.schlenkerapp.barcode.QRActivity;
 import de.leichten.schlenkerapp.provider.FileContentProvider;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Intent;
@@ -21,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -51,36 +46,74 @@ public class PartieActivity extends Activity {
 		PackageManager pm = getPackageManager();
 
 		if (pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-
-			Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+			Intent i = new Intent(
+					android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 			i.putExtra(MediaStore.EXTRA_OUTPUT, FileContentProvider.CONTENT_URI);
 			startActivityForResult(i, REQUEST_CODE);
 
 		} else {
-			Toast.makeText(getBaseContext(), "Camera is not available",	Toast.LENGTH_LONG).show();
+			Toast.makeText(getBaseContext(), "Camera is not available",
+					Toast.LENGTH_LONG).show();
 		}
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		
+
 		Log.i(Tag, "Receive the camera result");
 
 		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
 
-	        File out = new File(getFilesDir(), "newImage.jpg");
+			File out = new File(getFilesDir(), "newImage.jpg");
 
 			if (!out.exists()) {
-				Toast.makeText(getBaseContext(),"Error while capturing image", Toast.LENGTH_LONG).show();
+				Toast.makeText(getBaseContext(), "Error while capturing image",
+						Toast.LENGTH_LONG).show();
 				return;
 			}
-			
+
 			Bitmap mBitmap = BitmapFactory.decodeFile(out.getAbsolutePath());
 			imageView.setImageBitmap(mBitmap);
-			
+
+		} else if (resultCode == RESULT_CANCELED) {
+			backToMainScreen();
 		}
 
+	}
+
+	private void backToMainScreen() {
+		Intent intent = new Intent(this, MainMenue.class);
+		startActivity(intent);
+		finish();
+	}
+
+	public void buttonClicked(final View view) {
+		Intent intent = null;
+
+		int id = view.getId();
+
+		switch (id) {
+		case R.id.btn_pictureOk:
+			intent = new Intent(this, QRActivity.class);
+			//TODO maybe pass some data...
+			startActivity(intent);
+			break;
+		case R.id.btn_pictureBad:
+			if(deleteRecentPicture()){
+				Toast.makeText(this, "Bild verworfen", Toast.LENGTH_SHORT).show();
+			}
+			backToMainScreen();
+			break;
+		default:
+			break;
+		}
+		
+	}
+	
+	private boolean deleteRecentPicture() {
+		File out = new File(getFilesDir(), "newImage.jpg");
+		return out.delete();
 	}
 
 	@Override

@@ -58,7 +58,8 @@ public class FileContentProvider extends ContentProvider {
 	@Override
 	public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
 		//TODO: check if sd card is inserted
-        File f = new File(getContext().getFilesDir(), "newImage.jpg");
+        
+		File f = new File(getContext().getFilesDir(), "newImage.jpg");
 		
 		if (f.exists()) {
 			return (ParcelFileDescriptor.open(f,ParcelFileDescriptor.MODE_READ_WRITE));
