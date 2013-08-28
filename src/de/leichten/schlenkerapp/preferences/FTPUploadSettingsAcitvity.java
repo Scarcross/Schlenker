@@ -1,4 +1,4 @@
-package de.leichten.schlenkerapp.net;
+package de.leichten.schlenkerapp.preferences;
 
 import android.os.Bundle;
 import static utils.Utils.SHARED_PREF_UPLOAD_NAME;

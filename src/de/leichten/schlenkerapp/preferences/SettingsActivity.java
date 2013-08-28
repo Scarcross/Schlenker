@@ -1,4 +1,4 @@
-package de.leichten.schlenkerapp.main;
+package de.leichten.schlenkerapp.preferences;
 
 import static utils.Utils.SHARED_PREF_NAME;
 import android.content.Intent;
@@ -13,15 +13,17 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.widget.ListView;
 import de.leichten.schlenkerapp.R;
-import de.leichten.schlenkerapp.net.FTPUploadSettingsAcitvity;
 
 public class SettingsActivity extends PreferenceActivity {
 
-	
+	//Preferences for partie pictures
 	private static Preference partie_ftp_up;
 	private static Preference partie_delete_sd;
 	private static Preference partie_upload_network;
 	private static Preference partie_copy_sd;
+	
+	
+	//Preferences for art pictures
 	private static Preference art_ftp_up;
 	private static Preference art_delete_sd;
 	private static Preference art_upload_network;
@@ -29,13 +31,18 @@ public class SettingsActivity extends PreferenceActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
+		
 		getPreferenceManager().setSharedPreferencesName(SHARED_PREF_NAME);
+	
 		addPreferencesFromResource(R.xml.preferences);
 		ListView list = (ListView) findViewById(android.R.id.list);
+		
 		// Change divider of standard gui
 		list.setDivider(new ColorDrawable(Color.GRAY));
 		list.setDividerHeight(4);
+		
 		
 		partie_ftp_up = findPreference(getResources().getString(R.string.key_partie_ftp_upload));
 		partie_ftp_up.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -47,7 +54,7 @@ public class SettingsActivity extends PreferenceActivity {
 				return false;
 			}
 		});
-		partie_delete_sd = findPreference(getResources().getString(R.string.key_partie_delete_pictures));
+		partie_delete_sd = findPreference(getResources().getString(R.string.key_art_ftp_upload));		
 		partie_delete_sd.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			
 			@Override
@@ -61,7 +68,7 @@ public class SettingsActivity extends PreferenceActivity {
 		
 		partie_upload_network = findPreference(getResources().getString(R.string.key_partie_upload_network));
 		
-		art_ftp_up = findPreference(getResources().getString(R.string.key_art_ftp_upload));
+		art_ftp_up = findPreference(getResources().getString(R.string.key_partie_delete_pictures));
 		
 		art_upload_network = findPreference(getResources().getString(R.string.key_art_upload_network));
 		

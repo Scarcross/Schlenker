@@ -1,22 +1,20 @@
 package de.leichten.schlenkerapp.main;
 
-import de.leichten.schlenkerapp.R;
-import de.leichten.schlenkerapp.R.layout;
-import de.leichten.schlenkerapp.R.menu;
-import de.leichten.schlenkerapp.barcode.QRActivity;
-import android.opengl.Visibility;
-import android.os.Bundle;
+import utils.Utils;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.Surface;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import de.leichten.schlenkerapp.R;
+import de.leichten.schlenkerapp.preferences.SettingsActivity;
 
 public class MainMenue extends Activity {
 
@@ -26,9 +24,15 @@ public class MainMenue extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_menue);
+
+		PreferenceManager.setDefaultValues(this, Utils.SHARED_PREF_NAME,
+				Context.MODE_PRIVATE, R.xml.preferences, false);
+
 		int orientation = getScreenOrientation();
 		if (isHorizontalOriented(orientation))
 			startAnimation();
+
+		//TODO check prefs and start filehandling 
 	}
 
 	@Override
@@ -83,7 +87,7 @@ public class MainMenue extends Activity {
 		case R.id.button_artikel:
 			break;
 		case R.id.button_letzteVorgaenge:
-			intent = new Intent(this, QRActivity.class);
+			intent = new Intent(this, ImagesActivity.class);
 			break;
 		case R.id.button_einstellungen:
 			intent = new Intent(this, SettingsActivity.class);

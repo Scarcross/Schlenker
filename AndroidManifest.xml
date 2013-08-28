@@ -2,14 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.leichten.schlenkerapp"
     android:versionCode="1"
-    android:versionName="1.0" 
-    >
+    android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="10" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.BATTERY_STATS" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -22,68 +22,68 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppBaseTheme" >
-        
-        
         <activity
             android:name="de.leichten.schlenkerapp.main.MainMenue"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="de.leichten.schlenkerapp.main.PartieActivity"
-            android:label="@string/title_activity_partie" 
+            android:label="@string/title_activity_partie"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" >
         </activity>
-
         <activity
             android:name="com.google.zxing.client.android.CaptureActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateAlwaysHidden" 
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
-           
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden" >
             <intent-filter>
                 <action android:name="com.google.zxing.client.android.SCAN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
         <activity
-            android:name="de.leichten.schlenkerapp.barcode.QRActivity"
-            android:theme="@style/AppTheme"
-            android:label="@string/title_activity_qr" >
+            android:name="de.leichten.schlenkerapp.main.QRActivity"
+            android:label="@string/title_activity_qr"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" >
         </activity>
-        
-        <activity 
-            android:name=".main.SettingsActivity"
-            android:theme="@style/AppTheme">
-        </activity>
-        
-        
-          <provider
+
+        <provider
             android:name="de.leichten.schlenkerapp.provider.FileContentProvider"
             android:authorities="de.leichten.schlenkerapp"
             android:enabled="true"
             android:exported="true" />
 
-        <service
-            android:name="de.leichten.schlenkerapp.UploadFileService"
-            android:label="@string/uploadfile_service" >
-        </service>
-
-        <receiver android:name="de.leichten.schlenkerapp.receiver.UploadFileReceiver" >
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-            </intent-filter>
-        </receiver>     
-        
-        
-        <activity android:name=".net.FTPUploadSettingsAcitvity"></activity>
+        <activity
+            android:name="de.leichten.schlenkerapp.preferences.SettingsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="de.leichten.schlenkerapp.preferences.FTPUploadSettingsAcitvity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="de.leichten.schlenkerapp.main.ImagesActivity"
+            android:label="@string/title_activity_images"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="de.leichten.schlenkerapp.ViewSingleImage"
+            android:label="@string/title_activity_view_single_image"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

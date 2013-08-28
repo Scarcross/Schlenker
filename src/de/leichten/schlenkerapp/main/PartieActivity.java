@@ -2,9 +2,10 @@ package de.leichten.schlenkerapp.main;
 
 import java.io.File;
 
+import utils.BitmapHelpers;
+
 import android.graphics.BitmapFactory;
 import de.leichten.schlenkerapp.R;
-import de.leichten.schlenkerapp.barcode.QRActivity;
 import de.leichten.schlenkerapp.provider.FileContentProvider;
 import android.net.Uri;
 import android.os.Bundle;
@@ -63,8 +64,7 @@ public class PartieActivity extends Activity {
 		PackageManager pm = getPackageManager();
 
 		if (pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-			Intent i = new Intent(
-					android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+			Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 			i.putExtra(MediaStore.EXTRA_OUTPUT, FileContentProvider.CONTENT_URI);
 			startActivityForResult(i, REQUEST_CODE);
 
@@ -79,7 +79,7 @@ public class PartieActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 
 		Log.i(Tag, "Receive the camera result");
-
+		
 		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
 
 			File out = new File(getFilesDir(), "newImage.jpg");
@@ -90,7 +90,7 @@ public class PartieActivity extends Activity {
 				return;
 			}
 
-			Bitmap mBitmap = BitmapFactory.decodeFile(out.getAbsolutePath());
+			Bitmap mBitmap = BitmapHelpers.decodeAndResizeFile(out);
 			imageView.setImageBitmap(mBitmap);
 
 		} else if (resultCode == RESULT_CANCELED) {

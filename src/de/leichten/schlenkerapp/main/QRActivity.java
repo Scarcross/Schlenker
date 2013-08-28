@@ -1,4 +1,4 @@
-package de.leichten.schlenkerapp.barcode;
+package de.leichten.schlenkerapp.main;
 
 import de.leichten.schlenkerapp.R;
 
