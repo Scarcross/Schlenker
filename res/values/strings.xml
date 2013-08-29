@@ -23,7 +23,7 @@
     <string name="ftp_conntype">ftp_conntype</string>
     <string name="ftp_password">ftp_password</string>
     <string name="ftp_username">ftp_username</string>
-    <string name="ftp_proxy">ftp_proxy</string>
+    <string name="ftp_port">ftp_port</string>
     <string name="ftp_address">ftp_address</string>
     <string name="ftp_activate">ftp_activate</string>
     <string name="title_activity_images">ImagesActivity</string>

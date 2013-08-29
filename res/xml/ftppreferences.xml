@@ -1,39 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    <PreferenceCategory 
-        android:title="FTP Einstellungen"
-        >
+
+    <PreferenceCategory android:title="FTP Einstellungen" >
         <EditTextPreference
-			android:title="Address"
-			android:key="@string/ftp_address"
-            />
-		<EditTextPreference 
-		    android:title="Username"
-		    android:key="@string/ftp_username"
-		    />        
+            android:key="@string/ftp_address"
+            android:title="Address" />
         <EditTextPreference
-            android:title="Password"
+            android:key="@string/ftp_username"
+            android:title="Username" />
+        <EditTextPreference
+            android:inputType="textPassword"
             android:key="@string/ftp_password"
             android:persistent="true"
-            android:inputType="textPassword"
-            />
-		<ListPreference 
-		    android:title="Connection Type"
-		    android:key="@string/ftp_conntype"
-		    android:entries="@array/connectiontypes"
-		    android:entryValues="@array/connectiontypes"
-		    android:defaultValue="TLS"
-		    />
-        <EditTextPreference
-            android:title="Proxy"
-            android:key="@string/ftp_proxy"
-            />
-        <CheckBoxPreference 
-            android:title="Automatisch Uploaden"
-            android:key="@string/ftp_activate"
+            android:title="Password" />
+
+        <ListPreference
+            android:defaultValue="TLS"
+            android:entries="@array/connectiontypes"
+            android:entryValues="@array/connectiontypes"
+            android:key="@string/ftp_conntype"
+            android:title="Connection Type" />
+
+        <de.leichten.schlenkerapp.preferences.EditTextIntegerPreference
+            android:key="portNumber"
+            android:maxLength="2"
+            android:numeric="integer"
+            android:summary="..."
+            android:title="@string/ftp_port" />
+
+        <CheckBoxPreference
             android:defaultValue="false"
-            />
+            android:key="@string/ftp_activate"
+            android:title="Automatisch Uploaden" />
     </PreferenceCategory>
-    
 
 </PreferenceScreen>

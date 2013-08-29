@@ -60,7 +60,6 @@
         android:key="rememberCount" 
         android:entries="@array/rememberCount" 
         android:entryValues="@array/rememberCount"
-        android:defaultValue="1"         
         />
     </PreferenceCategory>
 

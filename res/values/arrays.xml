@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="connectiontypes">
+    <string-array name="connectiontypes">
         <item>TLS</item>
         <item>SSL</item>
-    </array>
+    </string-array>
      
-     <array name="rememberCount">
+     <string-array name="rememberCount">
         <item>1</item>
         <item>5</item>
         <item>10</item>
         <item>15</item>
-    </array>
+    </string-array>
     
 </resources>

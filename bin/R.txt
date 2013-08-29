@@ -175,7 +175,7 @@ int string ftp_activate 0x7f0a008f
 int string ftp_address 0x7f0a008e
 int string ftp_conntype 0x7f0a008a
 int string ftp_password 0x7f0a008b
-int string ftp_proxy 0x7f0a008d
+int string ftp_port 0x7f0a008d
 int string ftp_username 0x7f0a008c
 int string hello_world 0x7f0a0091
 int string history_clear_one_history_text 0x7f0a0025

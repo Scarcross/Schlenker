@@ -80,7 +80,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="de.leichten.schlenkerapp.ViewSingleImage"
+            android:name="de.leichten.schlenkerapp.main.ViewSingleImage"
             android:label="@string/title_activity_view_single_image"
             android:screenOrientation="portrait" >
         </activity>

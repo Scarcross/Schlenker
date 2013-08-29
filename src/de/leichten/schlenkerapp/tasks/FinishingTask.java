@@ -32,6 +32,8 @@ public class FinishingTask extends AsyncTask<String, Void, Boolean> {
 			File lastPic = new File(context.getFilesDir(), "newImage.jpg");
 			if (lastPic.renameTo(new File(context.getFilesDir(), filename[0]))) {
 				BitmapHelpers.decodeAndResizeFile(lastPic);
+				
+				
 				//rotatePicture();
 				startOtherFileTasks();
 			}
