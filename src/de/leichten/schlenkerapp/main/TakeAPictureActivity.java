@@ -3,6 +3,8 @@ package de.leichten.schlenkerapp.main;
 import java.io.File;
 
 import utils.BitmapHelpers;
+import utils.Constants;
+import utils.Utils;
 
 import android.graphics.BitmapFactory;
 import de.leichten.schlenkerapp.R;
@@ -20,14 +22,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class PartieActivity extends Activity {
+public class TakeAPictureActivity extends Activity {
 
 	private static final String CAM_CALLED = "CAM_CALLED";
 	private static final int REQUEST_CODE = 100;
 	private final String Tag = getClass().getName();
 
+	private Bundle savedInstanceState;
 	private ImageView imageView;
-	private Uri fileUri;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -37,8 +39,9 @@ public class PartieActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		this.savedInstanceState = savedInstanceState;
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_partie);
+		setContentView(R.layout.activity_take_picture);
 
 		imageView = (ImageView) findViewById(R.id.imageView1);
 
@@ -46,8 +49,8 @@ public class PartieActivity extends Activity {
 			if (!savedInstanceState.getBoolean(CAM_CALLED)) {
 				takeAPicture();
 			}
-			
-		}else {
+
+		} else {
 			takeAPicture();
 		}
 
@@ -63,14 +66,16 @@ public class PartieActivity extends Activity {
 
 		PackageManager pm = getPackageManager();
 
+		
+		
 		if (pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
 			Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 			i.putExtra(MediaStore.EXTRA_OUTPUT, FileContentProvider.CONTENT_URI);
 			startActivityForResult(i, REQUEST_CODE);
 
 		} else {
-			Toast.makeText(getBaseContext(), "Camera is not available",
-					Toast.LENGTH_LONG).show();
+			Toast.makeText(getBaseContext(), "Camera is not available", Toast.LENGTH_LONG).show();
+			finish();
 		}
 	}
 
@@ -79,17 +84,16 @@ public class PartieActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 
 		Log.i(Tag, "Receive the camera result");
-		
+
 		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
 
 			File out = new File(getFilesDir(), "newImage.jpg");
 
 			if (!out.exists()) {
-				Toast.makeText(getBaseContext(), "Error while capturing image",
-						Toast.LENGTH_LONG).show();
+				Toast.makeText(getBaseContext(), "Error while capturing image", Toast.LENGTH_LONG).show();
 				return;
 			}
-
+			//setze verkleinerte variante in imageview (könnte man eigentlich auch gleich verarbeiten)
 			Bitmap mBitmap = BitmapHelpers.decodeAndResizeFile(out);
 			imageView.setImageBitmap(mBitmap);
 
@@ -106,27 +110,48 @@ public class PartieActivity extends Activity {
 	}
 
 	public void buttonClicked(final View view) {
+		if(savedInstanceState != null){
+			savedInstanceState.clear();
+		}
 		Intent intent = null;
 
 		int id = view.getId();
 
 		switch (id) {
 		case R.id.btn_pictureOk:
-			intent = new Intent(this, QRActivity.class);
-			// TODO maybe pass some data...
+			intent = new Intent(this, TakeBarcodeActivity.class);
+			getAndAddProcedure(intent);
 			startActivity(intent);
+			finish();
 			break;
 		case R.id.btn_pictureBad:
 			if (deleteRecentPicture()) {
-				Toast.makeText(this, "Bild verworfen", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(this, "Bild verworfen", Toast.LENGTH_SHORT).show();
 			}
+			finish();
 			backToMainScreen();
 			break;
 		default:
 			break;
 		}
 
+	}
+
+	private void getAndAddProcedure(Intent intent) {
+		Intent reveicedIntent = getIntent();
+		Object object = reveicedIntent.getExtras().get(Constants.PROCEDURE_PARTIE_OR_ARTICLE);
+		if(object != null){
+			if (Constants.PROCEDURE_PARTIE.equals(object)){
+				intent.putExtra(Constants.PROCEDURE_PARTIE_OR_ARTICLE, Constants.PROCEDURE_PARTIE);
+			}
+			if (Constants.PROCEDURE_ARTICLE.equals(object)){
+				intent.putExtra(Constants.PROCEDURE_PARTIE_OR_ARTICLE, Constants.PROCEDURE_ARTICLE);
+			}
+			else{
+				backToMainScreen();
+				finish();
+			}
+		}
 	}
 
 	private boolean deleteRecentPicture() {

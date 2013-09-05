@@ -20,7 +20,7 @@ import android.widget.ImageView;
  
 public class ImageLoader {
  
-    MemoryCache memoryCache = new MemoryCache();
+    MemoryCache memoryCache = MemoryCache.getInstance();
     
     private Map<ImageView, String> imageViews = Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
     ExecutorService executorService;

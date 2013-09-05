@@ -1,66 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory android:title="Partiebild" >
+    <PreferenceCategory android:title="Verbindungseinstellungen" >
         <Preference
-            android:key="@string/key_partie_ftp_upload"
+            android:key="@string/key_ftp_settings"
             android:persistent="true"
-            android:summary="Der Pfad für einen FTP Upload"
-            android:title="FTP-Upload" />
-
+            android:summary="Verbindungseinstellungen FTP"
+            android:title="FTP-Einstellungen" />
+        <Preference
+            android:key="@string/key_lan_settings"
+            android:persistent="true"
+            android:summary="Verbindungseinstellungen LAN"
+            android:title="LAN-Einstellungen" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Partie Bild" >
         <CheckBoxPreference
+            android:defaultValue="true"
             android:key="@string/key_partie_upload_network"
             android:persistent="true"
-            android:summary="Upload auf einen Ordner im Netzwerk"
-            android:title="Netzwerk Upload" />
+            android:summary="Soll das Bild in LAN hochgeladen werden?"
+            android:title="Bild upload LAN" />
         <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/key_partie_ftp_upload"
+            android:persistent="true"
+            android:summary="Soll das Bild per FTP hochgeladen werden?"
+            android:title="Bild upload FTP" />
+
+        <EditTextPreference
+            android:defaultValue="/SchlenkerApp/Partie"
+            android:key="@string/ftp_partie_folder_path"
+            android:persistent="true"
+            android:summary="/SchlenkerApp/Partie"
+            android:title="FTP Ordner Pfad" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
             android:key="@string/key_partie_copy_sd"
             android:persistent="true"
             android:summary="Kopiert die Bilder auf die SD-Karte oder auch den internen Smartphone speicher"
             android:title="Kopieren auf SD-Karte" />
+
+        <EditTextPreference
+            android:defaultValue="/SchlenkerApp/Partie"
+            android:key="@string/sd_partie_folder_path"
+            android:persistent="true"
+            android:summary="/SchlenkerApp/Partie"
+            android:title="SD Ordner Pfad" />
+
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/key_partie_delete_pictures"
             android:summary="Löscht nach erfolgreichem Upload die Bilder auf dem Smartphone"
             android:title="Hochgeladene Bilder löschen" />
     </PreferenceCategory>
-    <PreferenceCategory
-        android:key=""
-        android:title="Atrikel-Standardbild" >
-        <Preference
-            android:key="@string/key_art_ftp_upload"
-            android:persistent="true"
-            android:summary="Der Pfad für einen FTP Upload"
-            android:title="FTP-Upload" />
-
+    <PreferenceCategory android:title="Atrikel Bild" >
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/key_art_upload_network"
-            android:summary="Upload auf einen Ordner im Netzwerk"
-            android:title="Netzwerk Upload" />
+            android:persistent="true"
+            android:summary="Soll das Bild in LAN hochgeladen werden?"
+            android:title="Bild upload LAN" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/key_art_ftp_upload"
+            android:persistent="true"
+            android:summary="Soll das Bild per FTP hochgeladen werden?"
+            android:title="Bild upload FTP" />
+
+        <EditTextPreference
+            android:defaultValue="/SchlenkerApp/Article"
+            android:key="@string/ftp_art_folder_path"
+            android:persistent="true"
+            android:summary="/SchlenkerApp/Article"
+            android:title="FTP Ordner Pfad" />
+
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/key_art_copy_sd"
             android:summary="Kopiert die Bilder auf die SD-Karte oder auch den internen Smartphone speicher"
             android:title="Kopieren auf SD-Karte" />
+
+        <EditTextPreference
+            android:defaultValue="/SchlenkerApp/Article"
+            android:key="@string/sd_art_folder_path"
+            android:persistent="true"
+            android:summary="/SchlenkerApp/Article"
+            android:title="SD Ordner Pfad" />
+
         <CheckBoxPreference
             android:defaultValue="true"
+
             android:key="@string/key_art_delete_pictures"
             android:summary="Löscht nach erfolgreichem Upload die Bilder auf dem Smartphone"
             android:title="Hochgeladene Bilder löschen" />
     </PreferenceCategory>
-  
-    <PreferenceCategory
-        android:key=""
-        android:title="Sonstiges">
-    	
-    	<ListPreference 
-        android:title="Anzahl Vorgänge"
-        android:summary="Legt die Anzahl der zu speichernden X Vorgänge fest"
-        android:key="rememberCount" 
-        android:entries="@array/rememberCount" 
-        android:entryValues="@array/rememberCount"
-        />
+    <PreferenceCategory android:title="Sonstiges" >
+        <ListPreference
+            android:entries="@array/rememberCount"
+            android:entryValues="@array/rememberCount"
+            android:key="rememberCount"
+            android:summary="Legt die Anzahl der zu speichernden X Vorgänge fest"
+            android:title="Anzahl Vorgänge" />
     </PreferenceCategory>
 
 </PreferenceScreen>

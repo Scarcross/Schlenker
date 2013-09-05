@@ -8,7 +8,9 @@ public class DeleteFileTask extends AsyncTask<File, Void, Void>{
 
 	@Override
 	protected Void doInBackground(File... files) {
-		// TODO Delete Files
+		//TODO Delete File on SD Card...
+		//TODO make sure the file is no longer in the pending folder...
+		
 		return null;
 	}
 

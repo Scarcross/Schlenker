@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="de.leichten.schlenkerapp.main.PartieActivity"
+            android:name="de.leichten.schlenkerapp.main.TakeAPictureActivity"
             android:label="@string/title_activity_partie"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" >
@@ -52,7 +52,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="de.leichten.schlenkerapp.main.QRActivity"
+            android:name="de.leichten.schlenkerapp.main.TakeBarcodeActivity"
             android:label="@string/title_activity_qr"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" >

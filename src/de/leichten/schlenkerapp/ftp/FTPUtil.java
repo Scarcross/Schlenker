@@ -1,7 +1,12 @@
 package de.leichten.schlenkerapp.ftp;
 
+import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+
+import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
@@ -22,7 +27,7 @@ public class FTPUtil {
                 boolean status = mFTPClient.login(username, password);
                 mFTPClient.enterLocalPassiveMode();
                 mFTPClient.setFileTransferMode(org.apache.commons.net.ftp.FTP.BINARY_FILE_TYPE);
-
+                mFTPClient.setFileType(FTP.BINARY_FILE_TYPE);
                 return status;
             }
         } catch (Exception e) {
@@ -59,13 +64,15 @@ public class FTPUtil {
 
     // Method to change working directory:
     public static boolean ftpChangeDirectory(String directory_path) {
-        try {
-            mFTPClient.changeWorkingDirectory(directory_path);
+    	boolean changeWorkingDirectory = false;
+    	
+    	try {
+    		changeWorkingDirectory = mFTPClient.changeWorkingDirectory(directory_path);
         } catch (Exception e) {
             Log.d(TAG, "Error: could not change directory to " + directory_path);
         }
+    	return changeWorkingDirectory;
 
-        return false;
     }
 
   
@@ -167,10 +174,10 @@ public class FTPUtil {
         boolean status = false;
         try {
             FileInputStream srcFileStream = new FileInputStream(srcFilePath);
-
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(srcFileStream);
             // change working directory to the destination directory
             if (ftpChangeDirectory(desDirectory)) {
-                status = mFTPClient.storeFile(desFileName, srcFileStream);
+                status = mFTPClient.storeFile(desFileName, bufferedInputStream);
             }
 
             srcFileStream.close();
@@ -181,5 +188,29 @@ public class FTPUtil {
 
         return status;
     }
+
+	public static String[] ftpGetFileList(String dir_path) {
+		String[] files = null;
+		
+		try {
+			FTPFile[] ftpFiles = mFTPClient.listFiles(dir_path);
+			if(ftpFiles.length > 0){
+				files = new String[ftpFiles.length];
+				for (int i = 0; i < ftpFiles.length; i++) {
+					files[i] = ftpFiles[i].getName();
+				}
+			}
+		
+			for (FTPFile ftpFile : ftpFiles) {
+				Log.d(TAG, ftpFile.getName());
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
+		return files;
+	}
 
 }

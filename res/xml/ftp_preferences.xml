@@ -3,15 +3,23 @@
 
     <PreferenceCategory android:title="FTP Einstellungen" >
         <EditTextPreference
+            android:defaultValue="192.168.0.5"
             android:key="@string/ftp_address"
+            android:persistent="true"
+            android:summary="192.168.0.5"
             android:title="Address" />
         <EditTextPreference
+            android:defaultValue="leichten"
             android:key="@string/ftp_username"
+            android:persistent="true"
+            android:summary="leichten"
             android:title="Username" />
         <EditTextPreference
+            android:defaultValue="leichten"
             android:inputType="textPassword"
             android:key="@string/ftp_password"
             android:persistent="true"
+            android:summary="leichten"
             android:title="Password" />
 
         <ListPreference
@@ -19,19 +27,16 @@
             android:entries="@array/connectiontypes"
             android:entryValues="@array/connectiontypes"
             android:key="@string/ftp_conntype"
+            android:persistent="true"
             android:title="Connection Type" />
 
-        <de.leichten.schlenkerapp.preferences.EditTextIntegerPreference
-            android:key="portNumber"
-            android:maxLength="2"
-            android:numeric="integer"
-            android:summary="..."
+        <EditTextPreference
+            android:defaultValue="21"
+            android:inputType="textPassword"
+            android:key="@string/ftp_port"
+            android:persistent="true"
+            android:summary="21"
             android:title="@string/ftp_port" />
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="@string/ftp_activate"
-            android:title="Automatisch Uploaden" />
     </PreferenceCategory>
 
 </PreferenceScreen>

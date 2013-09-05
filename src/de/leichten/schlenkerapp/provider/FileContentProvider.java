@@ -2,6 +2,7 @@ package de.leichten.schlenkerapp.provider;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 
 import android.content.ContentProvider;
@@ -25,19 +26,8 @@ public class FileContentProvider extends ContentProvider {
 
 	@Override
 	 public boolean onCreate() {
+		return false;
 
-        try {
-            File mFile = new File(getContext().getFilesDir(), "newImage.jpg");
-           
-            if(!mFile.exists()) {
-                mFile.createNewFile();
-            }
-            getContext().getContentResolver().notifyChange(CONTENT_URI, null);
-            return (true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
 
     }
 
@@ -58,12 +48,22 @@ public class FileContentProvider extends ContentProvider {
 
 	@Override
 	public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
-		//TODO: check if sd card is inserted
         
 		File f = new File(getContext().getFilesDir(), "newImage.jpg");
-		
+ 
 		if (f.exists()) {
 			return (ParcelFileDescriptor.open(f,ParcelFileDescriptor.MODE_READ_WRITE));
+		}
+		else{
+            try {
+				f.createNewFile();
+				return (ParcelFileDescriptor.open(f,ParcelFileDescriptor.MODE_READ_WRITE));
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		}
 		throw new FileNotFoundException(uri.getPath());
 

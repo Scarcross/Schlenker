@@ -1,9 +1,15 @@
 package de.leichten.schlenkerapp.main;
 
+import java.io.File;
+
+import org.apache.commons.net.io.Util;
+
+import utils.Constants;
 import utils.Utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -14,7 +20,9 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import de.leichten.schlenkerapp.R;
+import de.leichten.schlenkerapp.ftp.FTPUploadTask;
 import de.leichten.schlenkerapp.preferences.SettingsActivity;
+import de.leichten.schlenkerapp.tasks.StartupPendingTask;
 
 public class MainMenue extends Activity {
 
@@ -24,14 +32,18 @@ public class MainMenue extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_menue);
-
-		PreferenceManager.setDefaultValues(this, Utils.SHARED_PREF_NAME,
-				Context.MODE_PRIVATE, R.xml.preferences, false);
+		
+		PreferenceManager.setDefaultValues(this, Constants.SHARED_PREF_NAME_MAIN,Context.MODE_PRIVATE, R.xml.preferences, true);
+		PreferenceManager.setDefaultValues(this, Constants.SHARED_PREF_NAME_FTP,Context.MODE_PRIVATE, R.xml.ftp_preferences, true);
 
 		int orientation = getScreenOrientation();
-		if (isHorizontalOriented(orientation))
+		if (isHorizontalOriented(orientation)){
 			startAnimation();
-
+		}
+		Utils.checkFreeAppSpace();
+		Utils.getFreeHeapMemory();
+		new StartupPendingTask(this).execute();
+		
 		//TODO check prefs and start filehandling 
 	}
 
@@ -82,12 +94,17 @@ public class MainMenue extends Activity {
 
 		switch (id) {
 		case R.id.button_partie:
-			intent = new Intent(this, PartieActivity.class);
+			intent = new Intent(this, TakeAPictureActivity.class);
+			intent.putExtra(Constants.PROCEDURE_PARTIE_OR_ARTICLE, Constants.PROCEDURE_PARTIE);
 			break;
 		case R.id.button_artikel:
+			intent = new Intent(this, TakeAPictureActivity.class);
+			intent.putExtra(Constants.PROCEDURE_PARTIE_OR_ARTICLE, Constants.PROCEDURE_ARTICLE);
 			break;
+
 		case R.id.button_letzteVorgaenge:
 			intent = new Intent(this, ImagesActivity.class);
+			
 			break;
 		case R.id.button_einstellungen:
 			intent = new Intent(this, SettingsActivity.class);

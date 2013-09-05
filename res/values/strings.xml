@@ -12,20 +12,39 @@
     <string name="exit">Beenden</string>
     <string name="uploadfile_service">UploadFile Service</string>
     <string name="title_activity_qr">QRActivity</string>
+    
     <string name="key_art_copy_sd">ART_COPY_SD</string>
-    <string name="key_art_upload_network">ART_UPLOAD_NETWORK</string>
-    <string name="key_art_ftp_upload">ART_FTP_UPLOAD</string>
-    <string name="key_art_delete_pictures">ART_DELETE_PICS</string>
     <string name="key_partie_copy_sd">PARTIE_COPY_SD</string>
+    <string name="sd_art_folder_path">SD_ART_FOLDER_PATH</string>
+    <string name="sd_partie_folder_path">SD_ART_FOLDER_PATH</string>
+    
+    
+    
+    
+    <string name="key_art_upload_network">ART_UPLOAD_NETWORK</string>
     <string name="key_partie_upload_network">PARTIE_UPLOAD_NETWORK</string>
-    <string name="key_partie_ftp_upload">PARTIE_ART_FTP_UPLOAD</string>
+
+    <string name="key_art_ftp_upload">ART_FTP_UPLOAD</string>
+    <string name="key_partie_ftp_upload">PARTIE_FTP_UPLOAD</string>
+    
+    <string name="key_art_delete_pictures">ART_DELETE_PICS</string>
     <string name="key_partie_delete_pictures">PARTIE_DELETE_PICS</string>
+    
+    <string name="key_ftp_settings">KEY_FTP_SETTINGS</string>
+    <string name="key_lan_settings">KEY_LAN_SETTINGS</string>    
+    
+    
     <string name="ftp_conntype">ftp_conntype</string>
     <string name="ftp_password">ftp_password</string>
     <string name="ftp_username">ftp_username</string>
     <string name="ftp_port">ftp_port</string>
     <string name="ftp_address">ftp_address</string>
-    <string name="ftp_activate">ftp_activate</string>
+
+    <string name="ftp_art_folder_path">FTP_ART_FOLDER_PATH</string>
+    <string name="ftp_partie_folder_path">FTP_PARTIE_FOLDER_PATH</string>
+    
+    
+    
     <string name="title_activity_images">ImagesActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_view_single_image">ViewSingleImage</string>

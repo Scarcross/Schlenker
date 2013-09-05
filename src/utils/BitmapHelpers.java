@@ -3,6 +3,7 @@ package utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import android.graphics.Bitmap;
@@ -21,6 +22,16 @@ public class BitmapHelpers {
 	
 	public static Bitmap getThumbnail(File originalImage){
 		return decodeAndResizeOriginal(originalImage, REQUIRED_SIZE_THUMBNAIL);
+	}
+	
+	public static void compressBitmap(Bitmap bitmap, File file){
+		try {
+		       FileOutputStream out = new FileOutputStream(file);
+		       bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
+		} catch (Exception e) {
+		       e.printStackTrace();
+		}
+	
 	}
 	
 	//shrink the image to 
@@ -65,15 +76,14 @@ public class BitmapHelpers {
         return null;
     }
 	
-	public static Bitmap rotateImage(File file, int degrees){
+	public static void rotateImage(File file, int degrees){
 		System.gc();
 		
 		Bitmap decodeFile = BitmapHelpers.decodeAndResizeFile(file);
 		Matrix affine = new Matrix();
 		affine.preRotate(degrees);
 		decodeFile = Bitmap.createBitmap(decodeFile, 0, 0, decodeFile.getWidth(), decodeFile.getHeight(), affine,false);
-		
-		return decodeFile;
+		UtilFile.saveBitmapToFile(decodeFile, file);
 		
 	}
 	
