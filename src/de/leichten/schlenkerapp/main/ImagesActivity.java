@@ -1,16 +1,21 @@
 package de.leichten.schlenkerapp.main;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import utils.BitmapHelpers;
 import utils.Constants;
 import utils.UtilFile;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,11 +24,15 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
 import de.leichten.schlenkerapp.R;
-import de.leichten.schlenkerapp.ftp.FTPUploadTask;
+import de.leichten.schlenkerapp.ftp.FTPDeleteTask;
+import de.leichten.schlenkerapp.ftp.FTPUpload;
+import de.leichten.schlenkerapp.ftp.FTPUtil;
 import de.leichten.schlenkerapp.imagehandling.ImageAdapter;
-import de.leichten.schlenkerapp.sd.SDSavingTask;
+import de.leichten.schlenkerapp.imagehandling.MemoryCache;
+import de.leichten.schlenkerapp.sd.SDDeleteFileTask;
+import de.leichten.schlenkerapp.sd.SDSaving;
 import de.leichten.schlenkerapp.sd.SDUtil;
-import de.leichten.schlenkerapp.tasks.ImageRotationTask;
+import de.leichten.schlenkerapp.tasks.FileHandlingStartDecideTask;
 
 public class ImagesActivity extends Activity {
 
@@ -63,6 +72,8 @@ public class ImagesActivity extends Activity {
 		if (file.isDirectory()) {
 			listFile = file.listFiles();
 
+			listFile = UtilFile.getOnlyFiles(listFile);
+
 			// sort images by date
 			Arrays.sort(listFile, new Comparator<File>() {
 				public int compare(File f1, File f2) {
@@ -100,7 +111,7 @@ public class ImagesActivity extends Activity {
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				final CharSequence[] items = { ROTATE_RIGHT, ROTATE_LEFT, RENAME, DELETE };
+				final CharSequence[] items = { ROTATE_RIGHT, ROTATE_LEFT, DELETE };
 
 				ImagesActivity.this.position = position;
 
@@ -114,9 +125,9 @@ public class ImagesActivity extends Activity {
 						if (items[item].equals(ROTATE_LEFT)) {
 							triggerRotationLeft();
 						}
-						if (items[item].equals(RENAME)) {
-							triggerRename();
-						}
+						// if (items[item].equals(RENAME)) {
+						// triggerRename();
+						// }
 						if (items[item].equals(DELETE)) {
 							triggerDelete();
 						}
@@ -134,13 +145,18 @@ public class ImagesActivity extends Activity {
 
 	private void triggerDelete() {
 		File file = new File(filePathStrings[position]);
+
+		new SDDeleteFileTask(this).execute(file);
+		new FTPDeleteTask(this, false).execute(file.getName());
 		file.delete();
+		loadPictures();
 	}
 
-	private void triggerRename() {
-		// TODO Auto-generated method stub
-
-	}
+	// private void triggerRename() {
+	//
+	// new FileHandlingStartDecideTask(file, decideProcedure(file),this);
+	//
+	// }
 
 	private void triggerRotationLeft() {
 		File file = new File(filePathStrings[this.position]);
@@ -169,23 +185,55 @@ public class ImagesActivity extends Activity {
 		});
 	}
 
-	private void doUploadStuff(File file) {
-		String procedure = decideProcedure(file);
-
-		new FTPUploadTask(this, procedure).execute(file);
-
-		if (SDUtil.checkFileExists(file)) {
-			new SDSavingTask(this, procedure).execute(file);
-		}
-
-	}
-
 	private String decideProcedure(File file) {
 		if (file.getName().contains("_")) {
-			return Constants.PROCEDURE_PARTIE;
-		} else {
 			return Constants.PROCEDURE_ARTICLE;
+		} else {
+			return Constants.PROCEDURE_PARTIE;
 		}
+	}
+
+	public class ImageRotationTask extends AsyncTask<File, Void, File> {
+		ImagesActivity imagesActivity;
+		int degrees = 0;
+		File file;
+
+		public ImageRotationTask(int degrees) {
+			this.degrees = degrees;
+		}
+
+		public ImageRotationTask(int degrees, ImagesActivity imagesActivity) {
+			this.degrees = degrees;
+			this.imagesActivity = imagesActivity;
+		}
+
+		@Override
+		protected File doInBackground(File... src) {
+
+			for (File file : src) {
+				this.file = file;
+				BitmapHelpers.rotateImage(file, degrees);
+			}
+			if (src.length == 1) {
+				return src[0];
+			} else {
+				return null;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(File result) {
+			super.onPostExecute(result);
+
+			if (imagesActivity != null) {
+				MemoryCache memoryCache = MemoryCache.getInstance();
+				memoryCache.remove(result.getAbsolutePath());
+				imagesActivity.loadPictures();
+			}
+			new FileHandlingStartDecideTask(this.file, decideProcedure(this.file), ImagesActivity.this, false, false);
+
+		}
+
 	}
 
 }

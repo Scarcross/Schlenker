@@ -1,5 +1,10 @@
 package de.leichten.schlenkerapp.main;
 
+import java.io.File;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.client.android.Intents.Scan;
+
 import utils.Constants;
 import android.app.Activity;
 import android.content.Intent;
@@ -15,10 +20,10 @@ import de.leichten.schlenkerapp.tasks.FinishingTask;
 public class TakeBarcodeActivity extends Activity {
 
 	private static final String BC_CALLED = "BC_CALLED";
-	
+
 	private TextView qrResult;
 	private ImageView imageView;
-	
+
 	public TextView getTextView() {
 		return qrResult;
 	}
@@ -31,15 +36,15 @@ public class TakeBarcodeActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_take_barcode);
-		
+
 		qrResult = (TextView) findViewById(R.id.textView_QrResult);
 		imageView = (ImageView) findViewById(R.id.imageView_QrResult);
-		
+
 		if (savedInstanceState != null) {
 			if (!savedInstanceState.getBoolean(BC_CALLED)) {
 				startQRScan();
 			}
-		}else {
+		} else {
 			startQRScan();
 		}
 
@@ -50,6 +55,7 @@ public class TakeBarcodeActivity extends Activity {
 		getMenuInflater().inflate(R.menu.qr, menu);
 		return true;
 	}
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -59,7 +65,7 @@ public class TakeBarcodeActivity extends Activity {
 	private void startQRScan() {
 		Intent intent = new Intent("com.google.zxing.client.android.SCAN");
 		intent.addCategory(Intent.CATEGORY_DEFAULT);
-		intent.putExtra("com.google.zxing.client.android.SCAN.SCAN_MODE","QR_CODE_MODE");
+		intent.putExtra("com.google.zxing.client.android.SCAN.SCAN_MODE", BarcodeFormat.ITF);
 		startActivityForResult(intent, 0);
 	}
 
@@ -70,41 +76,59 @@ public class TakeBarcodeActivity extends Activity {
 				qrResult.setText("Warte auf Finish...");
 				triggerFinishing(contents);
 			}
+			else {
+				deleteRecentPicture();
+				backToMainScreen();
+			}
 		} else {
-			// TODO implement
+			
 		}
+	}
+
+	private boolean deleteRecentPicture() {
+		File out = new File(getFilesDir(), "newImage.jpg");
+		return out.delete();
 	}
 
 	private void triggerFinishing(String barcode) {
 		FinishingTask finishingTask;
-		
+
 		Intent reveicedIntent = getIntent();
 		Object object = reveicedIntent.getExtras().get(Constants.PROCEDURE_PARTIE_OR_ARTICLE);
-		
-		if(object != null){
-			if (Constants.PROCEDURE_PARTIE.equals(object)){
-				finishingTask = new FinishingTask(this,Constants.PROCEDURE_PARTIE);
+
+		if (object != null) {
+			if (Constants.PROCEDURE_PARTIE.equals(object)) {
+				finishingTask = new FinishingTask(this, Constants.PROCEDURE_PARTIE);
 				finishingTask.execute(barcode);
-			}
-			else if (Constants.PROCEDURE_ARTICLE.equals(object)){
-				finishingTask = new FinishingTask(this,Constants.PROCEDURE_ARTICLE);
+			} else if (Constants.PROCEDURE_ARTICLE.equals(object)) {
+				finishingTask = new FinishingTask(this, Constants.PROCEDURE_ARTICLE);
 				finishingTask.execute(barcode);
-			}
-			else{
+			} else {
 				backToMainScreen();
-				finish();
 			}
 		}
 	}
 
 	private void backToMainScreen() {
 		Intent intent = new Intent(this, MainMenue.class);
+		intent.addCategory(Intent.CATEGORY_HOME);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+
 		startActivity(intent);
 		finish();
 	}
 
-	
-	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		getImageView().setImageResource(0);
+	}
 
-	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		imageView = null;
+
+	}
+
 }

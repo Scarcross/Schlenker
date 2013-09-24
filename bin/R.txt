@@ -51,8 +51,8 @@ int id back_button 0x7f090033
 int id barcode_image_view 0x7f09001f
 int id bookmark_title 0x7f09001a
 int id bookmark_url 0x7f09001b
-int id btn_pictureBad 0x7f090017
-int id btn_pictureOk 0x7f090016
+int id btn_pictureBad 0x7f090016
+int id btn_pictureOk 0x7f090017
 int id button_artikel 0x7f09000f
 int id button_beenden 0x7f090012
 int id button_einstellungen 0x7f090011
@@ -177,7 +177,7 @@ int string ftp_partie_folder_path 0x7f0a0094
 int string ftp_password 0x7f0a008f
 int string ftp_port 0x7f0a0091
 int string ftp_username 0x7f0a0090
-int string hello_world 0x7f0a0096
+int string hello_world 0x7f0a0097
 int string history_clear_one_history_text 0x7f0a0025
 int string history_clear_text 0x7f0a0024
 int string history_email_title 0x7f0a0026
@@ -196,6 +196,7 @@ int string key_partie_delete_pictures 0x7f0a008b
 int string key_partie_ftp_upload 0x7f0a0089
 int string key_partie_upload_network 0x7f0a0087
 int string last_process 0x7f0a007d
+int string maxHistory 0x7f0a0095
 int string menu_about 0x7f0a002b
 int string menu_encode_mecard 0x7f0a002c
 int string menu_encode_vcard 0x7f0a002d
@@ -274,11 +275,11 @@ int string sd_partie_folder_path 0x7f0a0085
 int string settings 0x7f0a007e
 int string share_name 0x7f0a0072
 int string title_about 0x7f0a0073
-int string title_activity_images 0x7f0a0095
+int string title_activity_images 0x7f0a0096
 int string title_activity_main_menue 0x7f0a0079
 int string title_activity_partie 0x7f0a007a
 int string title_activity_qr 0x7f0a0081
-int string title_activity_view_single_image 0x7f0a0097
+int string title_activity_view_single_image 0x7f0a0098
 int string uploadfile_service 0x7f0a0080
 int string wifi_changing_network 0x7f0a0074
 int string wifi_ssid_label 0x7f0a0075

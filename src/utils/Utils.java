@@ -23,7 +23,6 @@ public class Utils {
 
 	// Check WIFI connectivity
 	public static boolean checkWifiConnectivity(Context context) {
-
 		ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
@@ -46,6 +45,7 @@ public class Utils {
 		// heapSize - heapRemaining = heapUsed + nativeUsage = totalUsage
 		return  max - (heapSize - heapRemaining + nativeUsage);
 	}
+
 	public static double checkFreeAppSpace() {
 		StatFs stats = new StatFs("/data");
 		int availableBlocks = stats.getAvailableBlocks();

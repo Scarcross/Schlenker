@@ -2,11 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
     android:padding="5dip" 
+    android:gravity="center"
     style="@style/AppTheme"
-    
-    android:background="@drawable/border_style">"
+    android:background="@drawable/border_style">
  
     <ImageView
         android:id="@+id/image"
@@ -14,12 +13,14 @@
         android:layout_height="fill_parent"
         android:src="@drawable/ic_launcher" />
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/image" />
+     <TextView
+         android:id="@+id/text"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:layout_alignParentRight="true"
+         android:layout_alignWithParentIfMissing="true"
+         android:layout_below="@+id/image"
+         android:layout_centerHorizontal="true"
+         android:layout_centerVertical="true" />
  
 </RelativeLayout>

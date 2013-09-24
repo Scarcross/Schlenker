@@ -8,6 +8,7 @@ import utils.Utils;
 
 import android.graphics.BitmapFactory;
 import de.leichten.schlenkerapp.R;
+import de.leichten.schlenkerapp.imagehandling.MemoryCache;
 import de.leichten.schlenkerapp.provider.FileContentProvider;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,6 +31,8 @@ public class TakeAPictureActivity extends Activity {
 
 	private Bundle savedInstanceState;
 	private ImageView imageView;
+
+	private File lastPic;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -66,15 +69,13 @@ public class TakeAPictureActivity extends Activity {
 
 		PackageManager pm = getPackageManager();
 
-		
-		
 		if (pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
 			Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 			i.putExtra(MediaStore.EXTRA_OUTPUT, FileContentProvider.CONTENT_URI);
 			startActivityForResult(i, REQUEST_CODE);
 
 		} else {
-			Toast.makeText(getBaseContext(), "Camera is not available", Toast.LENGTH_LONG).show();
+			Toast.makeText(getBaseContext(), "Keine Kamera Anwendung gefunden!", Toast.LENGTH_LONG).show();
 			finish();
 		}
 	}
@@ -86,68 +87,60 @@ public class TakeAPictureActivity extends Activity {
 		Log.i(Tag, "Receive the camera result");
 
 		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+			lastPic = new File(getFilesDir(), "newImage.jpg");
 
-			File out = new File(getFilesDir(), "newImage.jpg");
-
-			if (!out.exists()) {
+			if (!lastPic.exists()) {
 				Toast.makeText(getBaseContext(), "Error while capturing image", Toast.LENGTH_LONG).show();
 				return;
 			}
-			//setze verkleinerte variante in imageview (könnte man eigentlich auch gleich verarbeiten)
-			Bitmap mBitmap = BitmapHelpers.decodeAndResizeFile(out);
-			imageView.setImageBitmap(mBitmap);
+			resizeImage();
+			
+			if (savedInstanceState != null) {
+				savedInstanceState.clear();
+			}
+			
+			startBarcodeActivity();
 
 		} else if (resultCode == RESULT_CANCELED) {
+			deleteRecentPicture();
 			backToMainScreen();
 		}
 
 	}
 
-	private void backToMainScreen() {
-		Intent intent = new Intent(this, MainMenue.class);
+	private void startBarcodeActivity() {
+		Intent intent = new Intent(this, TakeBarcodeActivity.class);
+		getAndAddProcedure(intent);
 		startActivity(intent);
 		finish();
 	}
 
-	public void buttonClicked(final View view) {
-		if(savedInstanceState != null){
-			savedInstanceState.clear();
-		}
-		Intent intent = null;
-
-		int id = view.getId();
-
-		switch (id) {
-		case R.id.btn_pictureOk:
-			intent = new Intent(this, TakeBarcodeActivity.class);
-			getAndAddProcedure(intent);
-			startActivity(intent);
-			finish();
-			break;
-		case R.id.btn_pictureBad:
-			if (deleteRecentPicture()) {
-				Toast.makeText(this, "Bild verworfen", Toast.LENGTH_SHORT).show();
-			}
-			finish();
-			backToMainScreen();
-			break;
-		default:
-			break;
-		}
-
+	private void resizeImage() {
+		Bitmap decodedAndResizedFile = BitmapHelpers.decodeAndResizeFile(lastPic);
+		BitmapHelpers.compressBitmap(decodedAndResizedFile, lastPic);
+		MemoryCache.getInstance().put(lastPic.getAbsolutePath(), decodedAndResizedFile);
 	}
+
+	private void backToMainScreen() {
+		Intent intent = new Intent(this, MainMenue.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.addCategory(Intent.CATEGORY_HOME);
+		startActivity(intent);
+		finish();
+	}
+
+
 
 	private void getAndAddProcedure(Intent intent) {
 		Intent reveicedIntent = getIntent();
 		Object object = reveicedIntent.getExtras().get(Constants.PROCEDURE_PARTIE_OR_ARTICLE);
-		if(object != null){
-			if (Constants.PROCEDURE_PARTIE.equals(object)){
+		if (object != null) {
+			if (Constants.PROCEDURE_PARTIE.equals(object)) {
 				intent.putExtra(Constants.PROCEDURE_PARTIE_OR_ARTICLE, Constants.PROCEDURE_PARTIE);
 			}
-			if (Constants.PROCEDURE_ARTICLE.equals(object)){
+			if (Constants.PROCEDURE_ARTICLE.equals(object)) {
 				intent.putExtra(Constants.PROCEDURE_PARTIE_OR_ARTICLE, Constants.PROCEDURE_ARTICLE);
-			}
-			else{
+			} else {
 				backToMainScreen();
 				finish();
 			}
@@ -164,6 +157,12 @@ public class TakeAPictureActivity extends Activity {
 		super.onDestroy();
 		imageView = null;
 
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		imageView.setImageResource(0);
 	}
 
 }

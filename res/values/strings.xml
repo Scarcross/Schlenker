@@ -37,12 +37,13 @@
     <string name="ftp_conntype">ftp_conntype</string>
     <string name="ftp_password">ftp_password</string>
     <string name="ftp_username">ftp_username</string>
-    <string name="ftp_port">ftp_port</string>
+    <string name="ftp_port">Port</string>
     <string name="ftp_address">ftp_address</string>
 
     <string name="ftp_art_folder_path">FTP_ART_FOLDER_PATH</string>
     <string name="ftp_partie_folder_path">FTP_PARTIE_FOLDER_PATH</string>
     
+    <string name="maxHistory">max_history</string>
     
     
     <string name="title_activity_images">ImagesActivity</string>

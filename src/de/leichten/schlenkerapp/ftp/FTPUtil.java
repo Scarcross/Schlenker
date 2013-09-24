@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -16,12 +18,13 @@ import android.util.Log;
 public class FTPUtil {
     private static final String TAG = null;
     public static FTPClient mFTPClient = null;
-
+    
     
     // Method to connect to FTP server:
     public static boolean ftpConnect(String host, String username, String password, int port) {
-        try {
+    	try {
             mFTPClient = new FTPClient();
+            mFTPClient.setConnectTimeout(4000);
             mFTPClient.connect(host, port);
             if (FTPReply.isPositiveCompletion(mFTPClient.getReplyCode())) {
                 boolean status = mFTPClient.login(username, password);
@@ -32,8 +35,10 @@ public class FTPUtil {
             }
         } catch (Exception e) {
             Log.d(TAG, "Error: could not connect to host " + host);
+            return false;
+        
         }
-        return false;
+        return true;
     }
 
     // Method to disconnect from FTP server:
@@ -105,16 +110,40 @@ public class FTPUtil {
     // Method to create new directory:
     public static boolean ftpMakeDirectory(String new_dir_path) {
         try {
+        	String status2 = mFTPClient.getStatus();
             boolean status = mFTPClient.makeDirectory(new_dir_path);
             return status;
         } catch (Exception e) {
-            Log.d(TAG, "Error: could not create new directory named "
-                    + new_dir_path);
+            Log.d(TAG, "Error: could not create new directory named " + new_dir_path);
         }
 
         return false;
     }
 
+    public static void ftpCreateDirectoryTree(String dirTree ) throws IOException {
+        mFTPClient.changeWorkingDirectory("/");
+ 
+    	boolean dirExists = true;
+
+    	  //tokenize the string and attempt to change into each directory level.  If you cannot, then start creating.
+    	  String[] directories = dirTree.split("/");
+    	  for (String dir : directories ) {
+    	    if (!dir.isEmpty() ) {
+    	      if (dirExists) {
+    	        dirExists = mFTPClient.changeWorkingDirectory(dir);
+    	      }
+    	      if (!dirExists) {
+    	        if (!mFTPClient.makeDirectory(dir)) {
+    	          throw new IOException("Unable to create remote directory '" + dir + "'.  error='" + mFTPClient.getReplyString()+"'");
+    	        }
+    	        if (!mFTPClient.changeWorkingDirectory(dir)) {
+    	          throw new IOException("Unable to change into newly created remote directory '" + dir + "'.  error='" + mFTPClient.getReplyString()+"'");
+    	        }
+    	      }
+    	    }
+    	  }     
+    	}
+    
     // Method to delete/remove a directory:
     public static boolean ftpRemoveDirectory(String dir_path) {
         try {
@@ -135,8 +164,7 @@ public class FTPUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return false;
+		return false;
     }
 
     // Method to rename a file:
@@ -212,5 +240,7 @@ public class FTPUtil {
 				
 		return files;
 	}
+
+	
 
 }

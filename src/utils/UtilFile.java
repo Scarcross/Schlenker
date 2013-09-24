@@ -6,8 +6,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 public class UtilFile {
 
@@ -15,7 +18,8 @@ public class UtilFile {
 
 		try {
 			FileOutputStream out = new FileOutputStream(file);
-			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
+			BitmapHelpers.decodeAndResizeFile(file);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -38,6 +42,48 @@ public class UtilFile {
 
 	}
 	
+	public static File[] getOnlyFiles(File[] fileList){
+		
+		ArrayList<File> temp = new ArrayList<File>();
+		for (int i = 0; i < fileList.length; i++) {
+			File array_element = fileList[i];
+			if (array_element.isFile()) {
+				temp.add(array_element);
+			}
+		}
+		return temp.toArray(new File[temp.size()]);
+	}
+	
+	public static int getCountHistoryDir(Context context) {
+		File root = context.getFilesDir();
+		File[] fileList = root.listFiles();
+
+		fileList = getOnlyFiles(fileList);
+		
+		for (File file : fileList) {
+			Log.d("Util", file.getAbsolutePath());
+		}
+		return fileList.length;
+	}
+
+	public static File getOldestFile(Context context) {
+		File oldestFile = null;
+		File root = context.getFilesDir();
+		File[] fileList = root.listFiles();
+
+		fileList = getOnlyFiles(fileList);
+
+		for (File file : fileList) {
+			if (oldestFile == null) {
+				oldestFile = file;
+				continue;
+			}
+			if(oldestFile.lastModified()> file.lastModified()){
+				oldestFile = file;
+			}
+		}
+		return oldestFile;
+	}
 	
 
 }

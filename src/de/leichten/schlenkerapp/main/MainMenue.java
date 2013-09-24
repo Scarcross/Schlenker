@@ -1,15 +1,10 @@
 package de.leichten.schlenkerapp.main;
 
-import java.io.File;
-
-import org.apache.commons.net.io.Util;
-
 import utils.Constants;
 import utils.Utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -20,41 +15,52 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import de.leichten.schlenkerapp.R;
-import de.leichten.schlenkerapp.ftp.FTPUploadTask;
 import de.leichten.schlenkerapp.preferences.SettingsActivity;
 import de.leichten.schlenkerapp.tasks.StartupPendingTask;
+import de.leichten.schlenkerapp.tasks.TestConnectionTask;
 
 public class MainMenue extends Activity {
 
 	private static final String TAG = "MainMenue";
+	private static final String MAIN_CALLED = "MAIN_CALLED";
 
+	private boolean wasCalled = false;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_menue);
-		
-		PreferenceManager.setDefaultValues(this, Constants.SHARED_PREF_NAME_MAIN,Context.MODE_PRIVATE, R.xml.preferences, true);
-		PreferenceManager.setDefaultValues(this, Constants.SHARED_PREF_NAME_FTP,Context.MODE_PRIVATE, R.xml.ftp_preferences, true);
+
+		PreferenceManager.setDefaultValues(this, Constants.SHARED_PREF_NAME_MAIN, Context.MODE_PRIVATE, R.xml.preferences, false);
+		PreferenceManager.setDefaultValues(this, Constants.SHARED_PREF_NAME_FTP, Context.MODE_PRIVATE, R.xml.ftp_preferences, false);
+
 
 		int orientation = getScreenOrientation();
-		if (isHorizontalOriented(orientation)){
+		if (isHorizontalOriented(orientation)) {
 			startAnimation();
 		}
-		Utils.checkFreeAppSpace();
-		Utils.getFreeHeapMemory();
-		new StartupPendingTask(this).execute();
-		
-		//TODO check prefs and start filehandling 
 	}
 
 	@Override
 	protected void onResume() {
+		if (!wasCalled) {
+			new TestConnectionTask(this).execute();
+			new StartupPendingTask(this).execute();
+			wasCalled = true;
+
+		}
+		
 		int orientation = getScreenOrientation();
 		if (isHorizontalOriented(orientation))
 			startAnimation();
 		super.onResume();
 	}
-
+	@Override
+	protected void onPause() {
+		this.wasCalled = true;
+		super.onPause();
+	}
+	
 	private boolean isHorizontalOriented(int orientation) {
 		return (orientation == 1 || orientation == 9);
 	}
@@ -63,16 +69,14 @@ public class MainMenue extends Activity {
 		int rotation = getWindowManager().getDefaultDisplay().getRotation();
 		int orientation = getResources().getConfiguration().orientation;
 		if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-			if (rotation == Surface.ROTATION_0
-					|| rotation == Surface.ROTATION_270) {
+			if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_270) {
 				return ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
 			} else {
 				return ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
 			}
 		}
 		if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			if (rotation == Surface.ROTATION_0
-					|| rotation == Surface.ROTATION_90) {
+			if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_90) {
 				return ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 			} else {
 				return ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
@@ -104,7 +108,7 @@ public class MainMenue extends Activity {
 
 		case R.id.button_letzteVorgaenge:
 			intent = new Intent(this, ImagesActivity.class);
-			
+
 			break;
 		case R.id.button_einstellungen:
 			intent = new Intent(this, SettingsActivity.class);

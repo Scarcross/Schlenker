@@ -9,6 +9,12 @@
             android:summary="192.168.0.5"
             android:title="Address" />
         <EditTextPreference
+            android:defaultValue="21"
+            android:key="@string/ftp_port"
+            android:persistent="true"
+            android:summary="21"
+            android:title="@string/ftp_port" />
+        <EditTextPreference
             android:defaultValue="leichten"
             android:key="@string/ftp_username"
             android:persistent="true"
@@ -29,14 +35,6 @@
             android:key="@string/ftp_conntype"
             android:persistent="true"
             android:title="Connection Type" />
-
-        <EditTextPreference
-            android:defaultValue="21"
-            android:inputType="textPassword"
-            android:key="@string/ftp_port"
-            android:persistent="true"
-            android:summary="21"
-            android:title="@string/ftp_port" />
     </PreferenceCategory>
 
 </PreferenceScreen>

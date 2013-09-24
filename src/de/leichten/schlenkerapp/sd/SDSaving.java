@@ -16,7 +16,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.widget.Toast;
 
-public class SDSavingTask extends AsyncTask<File, Void, Void> {
+public class SDSaving {
 
 	private static String SD_PARTIE_PATH = "/SchlenkerApp/Partie";
 	private static String SD_ARTICLE_PATH = "/SchlenkerApp/Article";
@@ -27,14 +27,13 @@ public class SDSavingTask extends AsyncTask<File, Void, Void> {
 
 	SharedPreferences settings;
 
-	public SDSavingTask(Context context, String procedure) {
+	public SDSaving(Context context, String procedure) {
 		this.context = context;
 		this.procedure = procedure;
 
 	}
 
-	@Override
-	protected Void doInBackground(File... files) {
+	public boolean saveSD(File... files) {
 		extractPreferences();
 
 		// Check for SD Card
@@ -51,7 +50,7 @@ public class SDSavingTask extends AsyncTask<File, Void, Void> {
 			}
 
 		}
-		return null;
+		return true;
 	}
 
 	private void copyArticle(File file) {

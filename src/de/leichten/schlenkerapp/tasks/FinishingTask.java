@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.apache.commons.net.ftp.FTPFile;
+
 import utils.BitmapHelpers;
 import utils.Constants;
 import utils.UtilFile;
@@ -17,16 +19,18 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 import de.leichten.schlenkerapp.R;
-import de.leichten.schlenkerapp.ftp.FTPUploadTask;
+import de.leichten.schlenkerapp.ftp.FTPUpload;
+import de.leichten.schlenkerapp.imagehandling.MemoryCache;
 import de.leichten.schlenkerapp.main.MainMenue;
 import de.leichten.schlenkerapp.main.TakeBarcodeActivity;
-import de.leichten.schlenkerapp.sd.SDSavingTask;
+import de.leichten.schlenkerapp.sd.SDDeleteFileTask;
+import de.leichten.schlenkerapp.sd.SDSaving;
 
 public class FinishingTask extends AsyncTask<String, Void, Boolean> {
-	
+
 	String procedure;
 	TakeBarcodeActivity barcodeActivity;
-	
+
 	String partieNummer;
 	String artikelNummer;
 	String verpackungsEinheit;
@@ -44,60 +48,63 @@ public class FinishingTask extends AsyncTask<String, Void, Boolean> {
 	@Override
 	protected Boolean doInBackground(String... barcode) {
 		organizeHistory();
-		
+
 		if (parseBarcode(barcode)) {
 			lastPic = new File(barcodeActivity.getFilesDir(), "newImage.jpg");
-			// First shrink image to save resources
-			resizeImage();
-			// Rotate picture from EXIF
+
 			rotatePictureFromEXIF();
-			// Rename File depending on the Procedure
 			renameFile();
 
-			// Do the upload stuff
-			startOtherFileTasks();
+			new FileHandlingStartDecideTask(lastPic, procedure, barcodeActivity, false, true).execute();
 			return true;
-		}
-		else{
+		} else {
 			return false;
 		}
 	}
 
 	private void organizeHistory() {
-		//TODO remove bitmap from MemoryCache
-		//TODO Delete the oldest picture if the number of max history ist reached.
+		while (getCountMaxHistoryPreferences() < UtilFile.getCountHistoryDir(barcodeActivity)) {
+			removeOldestEntry();
+		}
 	}
 
-	/**
-	 * Last picture will be shrinked and compressed if possible
-	 */
-
-	private void resizeImage() {
-		Bitmap decodedAndResizedFile = BitmapHelpers.decodeAndResizeFile(lastPic);
-		BitmapHelpers.compressBitmap(decodedAndResizedFile, lastPic);
+	private void removeOldestEntry() {
+		File oldestFile = UtilFile.getOldestFile(barcodeActivity);
+		if (oldestFile != null) {
+			MemoryCache memoryCache = MemoryCache.getInstance();
+			memoryCache.remove(oldestFile.getAbsolutePath());
+			oldestFile.delete();
+		}
 	}
+
+	private int getCountMaxHistoryPreferences() {
+		SharedPreferences settings = barcodeActivity.getSharedPreferences(Constants.SHARED_PREF_NAME_MAIN, Context.MODE_PRIVATE);
+		 int parseInt = Integer.parseInt(settings.getString(barcodeActivity.getResources().getString(R.string.maxHistory), null));
+		 return parseInt;
+	}
+
+	
 
 	private void renameFile() {
-
+		String oldName = lastPic.getAbsolutePath();
+		
 		if (Constants.PROCEDURE_PARTIE.equals(this.procedure)) {
 			setPartieFilename();
 		} else if (Constants.PROCEDURE_ARTICLE.equals(this.procedure)) {
 			setArticleFilename();
 		}
-		showFileList();
+		MemoryCache.getInstance().rename(oldName, lastPic.getAbsolutePath());
 	}
 
 	private boolean parseBarcode(String[] barcodes) {
 		String barcode = barcodes[0];
-
 		if (barcode.length() == 16) {
 			partieNummer = barcode.substring(0, 6);
 			artikelNummer = barcode.substring(6, 12);
 			verpackungsEinheit = barcode.substring(12, 15);
 			pruefZiffer = barcode.substring(15, 16);
 			return true;
-		}
-		else{
+		} else {
 			return false;
 		}
 	}
@@ -109,7 +116,31 @@ public class FinishingTask extends AsyncTask<String, Void, Boolean> {
 	}
 
 	private void setArticleFilename() {
-		File newFile = new File(barcodeActivity.getFilesDir(), artikelNummer+"_1");
+		File[] artFiles = barcodeActivity.getFilesDir().listFiles();
+		int increasedNumber = 1;
+
+		for (File file : artFiles) {
+			if (file.isFile()) {
+				String filename = file.getName();
+
+				int upperIndex = filename.indexOf("_");
+				if (upperIndex == -1)
+					continue;
+
+				String artikelNummerTemp = filename.substring(0, upperIndex);
+
+				if (artikelNummer.equals(artikelNummerTemp)) {
+					char charAt = filename.charAt(filename.length() - 1);
+					int parseInt = Integer.parseInt(charAt + "");
+					parseInt++;
+					if (parseInt > increasedNumber)
+						increasedNumber = parseInt;
+				}
+			}
+		}
+
+		File newFile = new File(barcodeActivity.getFilesDir(), artikelNummer + "_" + String.valueOf(increasedNumber));
+
 		lastPic.renameTo(newFile);
 		lastPic = newFile;
 
@@ -137,83 +168,34 @@ public class FinishingTask extends AsyncTask<String, Void, Boolean> {
 		}
 	}
 
-	private void startOtherFileTasks() {
-		//TODO Check WIFI connection
-				//TODO copy the files in the pending folder --> if it is full make message!! and do something
-
-		if (Constants.PROCEDURE_PARTIE.equals(this.procedure)) {
-			decidePartieTasks();
-		} else if (Constants.PROCEDURE_ARTICLE.equals(this.procedure)) {
-			decideArticleTasks();
-		}
-	
-	}
-
-	private void decideArticleTasks() {
-		SharedPreferences prefsMain = barcodeActivity.getSharedPreferences(Constants.SHARED_PREF_NAME_MAIN, Context.MODE_PRIVATE);
-
-		//Do we have to copy it on SD Card?
-		if(prefsMain.getBoolean(barcodeActivity.getResources().getString(R.string.key_art_copy_sd), false)){
-					new SDSavingTask(barcodeActivity, this.procedure).execute(lastPic.getAbsoluteFile());
-				}
-		
-		//Do we have to upload it to an FTP?
-		if(prefsMain.getBoolean(barcodeActivity.getResources().getString(R.string.key_art_ftp_upload), false)){
-			new FTPUploadTask(barcodeActivity, this.procedure).execute(lastPic);
-			
-			//Do we have to delete the Files after uploading ?
-			if(prefsMain.getBoolean(barcodeActivity.getResources().getString(R.string.key_art_delete_pictures), false)){
-				new DeleteFileTask().execute(lastPic);
-			}
-		}
-	}
-
-	private void decidePartieTasks() {
-
-		SharedPreferences prefsMain = barcodeActivity.getSharedPreferences(Constants.SHARED_PREF_NAME_MAIN, Context.MODE_PRIVATE);
-
-		//Do we have to copy it on SD Card?
-		if(prefsMain.getBoolean(barcodeActivity.getResources().getString(R.string.key_partie_copy_sd), false)){
-					new SDSavingTask(barcodeActivity, this.procedure).execute(lastPic.getAbsoluteFile());
-				}
-		
-		//Do we have to upload it to an FTP?
-		if(prefsMain.getBoolean(barcodeActivity.getResources().getString(R.string.key_partie_ftp_upload), false)){
-			new FTPUploadTask(barcodeActivity, this.procedure).execute(lastPic);
-			
-			//Do we have to delete the Files after uploading ?
-			if(prefsMain.getBoolean(barcodeActivity.getResources().getString(R.string.key_partie_delete_pictures), false)){
-				new DeleteFileTask().execute(lastPic);
-			}
-		}
-	}
-
 	@Override
 	protected void onPostExecute(Boolean result) {
-		barcodeActivity.getImageView().setImageBitmap(BitmapHelpers.decodeAndResizeFile(lastPic));
-		barcodeActivity.getTextView().setText("Bild: "+ lastPic.getName());
-		if(result){
-			Toast.makeText(barcodeActivity, procedure+" Finishing erfolgreich", Toast.LENGTH_LONG).show();			
-		}
+		barcodeActivity.getImageView().setImageBitmap(MemoryCache.getInstance().get(lastPic.getAbsolutePath()));
+		barcodeActivity.getTextView().setText("Bild: " + lastPic.getName());
 		
+		if (result) {
+			Toast.makeText(barcodeActivity, "Finishing erfolgreich", Toast.LENGTH_LONG).show();
+		}
+		else {
+			//Some problems maybe with the barcode? 
+			//TODO delete the temp file....
+		}
+
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 
 			@Override
 			public void run() {
 				Intent intent = new Intent(barcodeActivity, MainMenue.class);
-				barcodeActivity.startActivity(intent);
+			    intent.addCategory(Intent.CATEGORY_HOME);
+			    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			    barcodeActivity.startActivity(intent);
+				barcodeActivity.finish();
 			}
 		}, 3000);
-		showFileList();
+		UtilFile.getCountHistoryDir(barcodeActivity);
 	}
 
-	private void showFileList() {
-		File root = barcodeActivity.getFilesDir();
-		File[] fileList = root.listFiles();
-		for (File file : fileList) {
-			Log.d(Tag, file.getAbsolutePath());
-		}
-	}
+	
 
 }

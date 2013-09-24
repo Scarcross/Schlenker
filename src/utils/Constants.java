@@ -8,8 +8,11 @@ public class Constants {
 	public static final String PROCEDURE_ARTICLE = "PROCEDURE_ARTICLE";
 	public static final String PROCEDURE_PARTIE_OR_ARTICLE = "PROCEDURE_OR_ARTICLE";
 	
-	
-	public static final String PARTIE_PENDING = "/Pending/Partie";
-	public static final String ARTICLE_PENDING = "/Pending/Article";
+	public static final String PARTIE_UPLOAD_PENDING = "/Pending/Upload/Partie";
+	public static final String ARTICLE_UPLOAD_PENDING = "/Pending/Upload/Article";
 
+	public static final String DELETE_PENDING = "/Pending/Delete";
+	
+	public static final String PARTIE_DELETE_PENDING = "/Pending/Delete/Partie";
+	public static final String ARTICLE_DELETE_PENDING = "/Pending/Delete/Article";
 }

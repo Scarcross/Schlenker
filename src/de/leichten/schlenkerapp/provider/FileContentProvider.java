@@ -27,8 +27,6 @@ public class FileContentProvider extends ContentProvider {
 	@Override
 	 public boolean onCreate() {
 		return false;
-
-
     }
 
 	@Override
@@ -60,7 +58,6 @@ public class FileContentProvider extends ContentProvider {
 				return (ParcelFileDescriptor.open(f,ParcelFileDescriptor.MODE_READ_WRITE));
 
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

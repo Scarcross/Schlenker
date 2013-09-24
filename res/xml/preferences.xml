@@ -7,19 +7,19 @@
             android:persistent="true"
             android:summary="Verbindungseinstellungen FTP"
             android:title="FTP-Einstellungen" />
-        <Preference
+       <!--  <Preference
             android:key="@string/key_lan_settings"
             android:persistent="true"
             android:summary="Verbindungseinstellungen LAN"
-            android:title="LAN-Einstellungen" />
+            android:title="LAN-Einstellungen" /> -->
     </PreferenceCategory>
     <PreferenceCategory android:title="Partie Bild" >
-        <CheckBoxPreference
+      <!--   <CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/key_partie_upload_network"
             android:persistent="true"
             android:summary="Soll das Bild in LAN hochgeladen werden?"
-            android:title="Bild upload LAN" />
+            android:title="Bild upload LAN" /> -->
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/key_partie_ftp_upload"
@@ -55,12 +55,13 @@
             android:title="Hochgeladene Bilder löschen" />
     </PreferenceCategory>
     <PreferenceCategory android:title="Atrikel Bild" >
-        <CheckBoxPreference
+        <!-- <CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/key_art_upload_network"
             android:persistent="true"
             android:summary="Soll das Bild in LAN hochgeladen werden?"
             android:title="Bild upload LAN" />
+        -->
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/key_art_ftp_upload"
@@ -90,18 +91,19 @@
 
         <CheckBoxPreference
             android:defaultValue="true"
-
             android:key="@string/key_art_delete_pictures"
             android:summary="Löscht nach erfolgreichem Upload die Bilder auf dem Smartphone"
             android:title="Hochgeladene Bilder löschen" />
     </PreferenceCategory>
     <PreferenceCategory android:title="Sonstiges" >
         <ListPreference
+            android:defaultValue="5"
             android:entries="@array/rememberCount"
             android:entryValues="@array/rememberCount"
-            android:key="rememberCount"
-            android:summary="Legt die Anzahl der zu speichernden X Vorgänge fest"
-            android:title="Anzahl Vorgänge" />
+            android:key="@string/maxHistory"
+            android:persistent="true"
+            android:summary="5"
+            android:title="Verlauf Max Anzahl Vorgänge" />
     </PreferenceCategory>
 
 </PreferenceScreen>

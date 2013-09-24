@@ -48,6 +48,16 @@ public class MemoryCache {
 		}
 	}
 
+	public void rename(String id, String newId){
+		if (get(id) != null) {
+			Bitmap temp = get(id);
+			this.cache.remove(id);
+			this.cache.put(newId, temp);
+		}
+		
+		
+	}
+	
 	public void remove(String id) {
 		try {
 			if (cache.containsKey(id)) {
