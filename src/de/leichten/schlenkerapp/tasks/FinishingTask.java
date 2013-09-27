@@ -5,26 +5,21 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.apache.commons.net.ftp.FTPFile;
-
 import utils.BitmapHelpers;
+import utils.BitmapHelpers.BitmapMemoryException;
 import utils.Constants;
+import utils.Dialogs;
 import utils.UtilFile;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.media.ExifInterface;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 import de.leichten.schlenkerapp.R;
-import de.leichten.schlenkerapp.ftp.FTPUpload;
 import de.leichten.schlenkerapp.imagehandling.MemoryCache;
 import de.leichten.schlenkerapp.main.MainMenue;
 import de.leichten.schlenkerapp.main.TakeBarcodeActivity;
-import de.leichten.schlenkerapp.sd.SDDeleteFileTask;
-import de.leichten.schlenkerapp.sd.SDSaving;
 
 public class FinishingTask extends AsyncTask<String, Void, Boolean> {
 
@@ -48,11 +43,16 @@ public class FinishingTask extends AsyncTask<String, Void, Boolean> {
 	@Override
 	protected Boolean doInBackground(String... barcode) {
 		organizeHistory();
+		lastPic = new File(barcodeActivity.getFilesDir(), "newImage.jpg");
 
 		if (parseBarcode(barcode)) {
-			lastPic = new File(barcodeActivity.getFilesDir(), "newImage.jpg");
 
-			rotatePictureFromEXIF();
+			try {
+				rotatePictureFromEXIF();
+			} catch (BitmapMemoryException e) {
+				Dialogs.getOutOfMemory(barcodeActivity).show();
+				e.printStackTrace();
+			}
 			renameFile();
 
 			new FileHandlingStartDecideTask(lastPic, procedure, barcodeActivity, false, true).execute();
@@ -146,7 +146,7 @@ public class FinishingTask extends AsyncTask<String, Void, Boolean> {
 
 	}
 
-	private void rotatePictureFromEXIF() {
+	private void rotatePictureFromEXIF() throws BitmapMemoryException {
 		try {
 			ExifInterface exif = new ExifInterface(lastPic.getAbsolutePath());
 			int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
@@ -168,17 +168,18 @@ public class FinishingTask extends AsyncTask<String, Void, Boolean> {
 		}
 	}
 
+	
 	@Override
 	protected void onPostExecute(Boolean result) {
-		barcodeActivity.getImageView().setImageBitmap(MemoryCache.getInstance().get(lastPic.getAbsolutePath()));
-		barcodeActivity.getTextView().setText("Bild: " + lastPic.getName());
-		
 		if (result) {
+			barcodeActivity.getImageView().setImageBitmap(MemoryCache.getInstance().get(lastPic.getAbsolutePath()));
+			barcodeActivity.getTextView().setText("Bild: " + lastPic.getName());			
 			Toast.makeText(barcodeActivity, "Finishing erfolgreich", Toast.LENGTH_LONG).show();
 		}
 		else {
-			//Some problems maybe with the barcode? 
-			//TODO delete the temp file....
+			barcodeActivity.getTextView().setText("...");			
+			Toast.makeText(barcodeActivity, "Finishing Fehler vermutlich invalider Barcode.. wird gelöscht", Toast.LENGTH_LONG).show();
+			lastPic.delete();
 		}
 
 		Timer timer = new Timer();
@@ -189,6 +190,7 @@ public class FinishingTask extends AsyncTask<String, Void, Boolean> {
 				Intent intent = new Intent(barcodeActivity, MainMenue.class);
 			    intent.addCategory(Intent.CATEGORY_HOME);
 			    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			    intent.putExtra(Constants.MAIN_CALLED, true);
 			    barcodeActivity.startActivity(intent);
 				barcodeActivity.finish();
 			}

@@ -1,20 +1,18 @@
 package de.leichten.schlenkerapp.main;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
 import utils.BitmapHelpers;
+import utils.BitmapHelpers.BitmapMemoryException;
 import utils.Constants;
+import utils.Dialogs;
 import utils.UtilFile;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,13 +23,9 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
 import de.leichten.schlenkerapp.R;
 import de.leichten.schlenkerapp.ftp.FTPDeleteTask;
-import de.leichten.schlenkerapp.ftp.FTPUpload;
-import de.leichten.schlenkerapp.ftp.FTPUtil;
 import de.leichten.schlenkerapp.imagehandling.ImageAdapter;
 import de.leichten.schlenkerapp.imagehandling.MemoryCache;
 import de.leichten.schlenkerapp.sd.SDDeleteFileTask;
-import de.leichten.schlenkerapp.sd.SDSaving;
-import de.leichten.schlenkerapp.sd.SDUtil;
 import de.leichten.schlenkerapp.tasks.FileHandlingStartDecideTask;
 
 public class ImagesActivity extends Activity {
@@ -56,6 +50,8 @@ public class ImagesActivity extends Activity {
 		Log.d("IMAGES", "onResume");
 		loadPictures();
 	}
+	
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +69,14 @@ public class ImagesActivity extends Activity {
 			listFile = file.listFiles();
 
 			listFile = UtilFile.getOnlyFiles(listFile);
-
+			
+			if (listFile.length<1) {
+				Dialogs.getNoFileToDisplay(this).show();
+			}
+			
 			// sort images by date
 			Arrays.sort(listFile, new Comparator<File>() {
-				public int compare(File f1, File f2) {
+				public int compare(File f2,File f1 ) {
 					return Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
 				}
 			});
@@ -212,7 +212,13 @@ public class ImagesActivity extends Activity {
 
 			for (File file : src) {
 				this.file = file;
-				BitmapHelpers.rotateImage(file, degrees);
+				try {
+					BitmapHelpers.rotateImage(file, degrees);
+				} catch (BitmapMemoryException e) {
+					loadPictures();
+					Dialogs.getOutOfMemory(ImagesActivity.this).show();
+					e.printStackTrace();
+				}
 			}
 			if (src.length == 1) {
 				return src[0];
@@ -230,7 +236,7 @@ public class ImagesActivity extends Activity {
 				memoryCache.remove(result.getAbsolutePath());
 				imagesActivity.loadPictures();
 			}
-			new FileHandlingStartDecideTask(this.file, decideProcedure(this.file), ImagesActivity.this, false, false);
+			new FileHandlingStartDecideTask(result, decideProcedure(result), ImagesActivity.this, false, false).execute();
 
 		}
 

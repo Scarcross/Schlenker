@@ -1,9 +1,6 @@
 package de.leichten.schlenkerapp.imagehandling;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -11,12 +8,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import utils.BitmapHelpers;
-
-import de.leichten.schlenkerapp.R;
-import android.os.Handler;
+import utils.BitmapHelpers.BitmapMemoryException;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Handler;
 import android.widget.ImageView;
+import de.leichten.schlenkerapp.R;
 
 public class ImageLoader {
 
@@ -49,9 +46,9 @@ public class ImageLoader {
 		executorService.submit(new PhotosLoader(p));
 	}
 
-	private Bitmap getBitmap(String url) {
+	private Bitmap getBitmap(String url) throws BitmapMemoryException {
 		File f = new File(url);
-		Bitmap b = BitmapHelpers.getThumbnail(f);
+		Bitmap b = BitmapHelpers.decodeAndResizeFile(f);
 		if (b != null) {
 			return b;
 		}

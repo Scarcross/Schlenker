@@ -2,18 +2,15 @@ package de.leichten.schlenkerapp.main;
 
 import java.io.File;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.client.android.Intents.Scan;
-
 import utils.Constants;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.zxing.BarcodeFormat;
+
 import de.leichten.schlenkerapp.R;
 import de.leichten.schlenkerapp.tasks.FinishingTask;
 
@@ -50,11 +47,7 @@ public class TakeBarcodeActivity extends Activity {
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.qr, menu);
-		return true;
-	}
+	
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -112,6 +105,7 @@ public class TakeBarcodeActivity extends Activity {
 	private void backToMainScreen() {
 		Intent intent = new Intent(this, MainMenue.class);
 		intent.addCategory(Intent.CATEGORY_HOME);
+	    intent.putExtra(Constants.MAIN_CALLED, true);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
 
 		startActivity(intent);

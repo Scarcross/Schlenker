@@ -9,7 +9,6 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 
 public class FileContentProvider extends ContentProvider {

@@ -3,25 +3,21 @@ package de.leichten.schlenkerapp.main;
 import java.io.File;
 
 import utils.BitmapHelpers;
+import utils.BitmapHelpers.BitmapMemoryException;
 import utils.Constants;
-import utils.Utils;
-
-import android.graphics.BitmapFactory;
-import de.leichten.schlenkerapp.R;
-import de.leichten.schlenkerapp.imagehandling.MemoryCache;
-import de.leichten.schlenkerapp.provider.FileContentProvider;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
+import utils.Dialogs;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Menu;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+import de.leichten.schlenkerapp.R;
+import de.leichten.schlenkerapp.imagehandling.MemoryCache;
+import de.leichten.schlenkerapp.provider.FileContentProvider;
 
 public class TakeAPictureActivity extends Activity {
 
@@ -34,11 +30,7 @@ public class TakeAPictureActivity extends Activity {
 
 	private File lastPic;
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.partie, menu);
-		return true;
-	}
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +85,13 @@ public class TakeAPictureActivity extends Activity {
 				Toast.makeText(getBaseContext(), "Error while capturing image", Toast.LENGTH_LONG).show();
 				return;
 			}
-			resizeImage();
+			
+			try {
+				resizeImage();
+			} catch (BitmapMemoryException e) {
+				Dialogs.getOutOfMemory(this).show();
+				e.printStackTrace();
+			}
 			
 			if (savedInstanceState != null) {
 				savedInstanceState.clear();
@@ -115,7 +113,7 @@ public class TakeAPictureActivity extends Activity {
 		finish();
 	}
 
-	private void resizeImage() {
+	private void resizeImage() throws BitmapMemoryException {
 		Bitmap decodedAndResizedFile = BitmapHelpers.decodeAndResizeFile(lastPic);
 		BitmapHelpers.compressBitmap(decodedAndResizedFile, lastPic);
 		MemoryCache.getInstance().put(lastPic.getAbsolutePath(), decodedAndResizedFile);
@@ -124,6 +122,7 @@ public class TakeAPictureActivity extends Activity {
 	private void backToMainScreen() {
 		Intent intent = new Intent(this, MainMenue.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	    intent.putExtra(Constants.MAIN_CALLED, true);
 		intent.addCategory(Intent.CATEGORY_HOME);
 		startActivity(intent);
 		finish();

@@ -2,29 +2,18 @@ package de.leichten.schlenkerapp.tasks;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import de.leichten.schlenkerapp.ftp.FTPDeleteTask;
-import de.leichten.schlenkerapp.ftp.FTPUpload;
-import de.leichten.schlenkerapp.ftp.FTPUtil;
-import de.leichten.schlenkerapp.preferences.FTPUploadSettingsAcitvity;
-
 import utils.Constants;
 import utils.Utils;
-
 import android.R;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.widget.Toast;
+import de.leichten.schlenkerapp.ftp.FTPDeleteTask;
+import de.leichten.schlenkerapp.ftp.FTPUpload;
 
 public class StartupPendingTask extends AsyncTask<Void, Void, Boolean> {
 

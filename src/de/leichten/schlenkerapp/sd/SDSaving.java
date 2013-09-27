@@ -3,18 +3,14 @@ package de.leichten.schlenkerapp.sd;
 import java.io.File;
 import java.io.IOException;
 
-import de.leichten.schlenkerapp.R;
-import de.leichten.schlenkerapp.ftp.FTPUtil;
-
 import utils.Constants;
 import utils.UtilFile;
 import utils.Utils;
-
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Environment;
 import android.widget.Toast;
+import de.leichten.schlenkerapp.R;
 
 public class SDSaving {
 

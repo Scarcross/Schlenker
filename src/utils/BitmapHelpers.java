@@ -6,24 +6,23 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import de.leichten.schlenkerapp.imagehandling.MemoryCache;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.os.Debug;
 
 public class BitmapHelpers {
 
 	final static int REQUIRED_SIZE = 1024;
 	final static int REQUIRED_SIZE_THUMBNAIL = 256;
 
-	public static Bitmap decodeAndResizeFile(File originalImage) {
+	public static Bitmap decodeAndResizeFile(File originalImage) throws BitmapMemoryException {
 		return decodeAndResizeOriginal(originalImage, REQUIRED_SIZE);
 	}
 
-	public static Bitmap getThumbnail(File originalImage) {
-		return decodeAndResizeOriginal(originalImage, REQUIRED_SIZE_THUMBNAIL);
-	}
+//	public static Bitmap getThumbnail(File originalImage) {
+//		return decodeAndResizeOriginal(originalImage, REQUIRED_SIZE_THUMBNAIL);
+//	}
 
 	public static void compressBitmap(Bitmap bitmap, File file) {
 		System.gc();
@@ -38,7 +37,7 @@ public class BitmapHelpers {
 	}
 
 	// shrink the image to
-	private static Bitmap decodeAndResizeOriginal(File file, int size) {
+	private static Bitmap decodeAndResizeOriginal(File file, int size) throws BitmapMemoryException{
 		System.gc();
 		try {
 			// Decode image size
@@ -56,13 +55,21 @@ public class BitmapHelpers {
 			int scale = 1;
 
 			while (true) {
-				if (width_tmp / 2 < size || height_tmp / 2 < size)
+				if (width_tmp / 2 < size || height_tmp / 2 < size){
+					scale = scale * 2;					
 					break;
-				width_tmp = width_tmp / 2;
-				height_tmp = height_tmp / 2;
-				scale = scale * 2;
+				}else{
+					width_tmp = width_tmp / 2;
+					height_tmp = height_tmp / 2;
+					scale = scale * 2;					
+				}
+				
 			}
-
+			
+			if (!checkBitmapFitsInMemory(width_tmp, height_tmp, 2)) {
+				throw new BitmapMemoryException("Memory is full!");
+			}
+			
 			// Decode with inSampleSize
 			options = new BitmapFactory.Options();
 			options.inSampleSize = scale;
@@ -80,7 +87,7 @@ public class BitmapHelpers {
 		return null;
 	}
 
-	public static void rotateImage(File file, int degrees) {
+	public static void rotateImage(File file, int degrees) throws BitmapMemoryException {
 		System.gc();
 
 		Bitmap decodeFile = BitmapHelpers.decodeAndResizeFile(file);
@@ -90,5 +97,33 @@ public class BitmapHelpers {
 		UtilFile.saveBitmapToFile(decodeFile, file);
 
 	}
+	
+	/**
+	 * Checks if a bitmap with the specified size fits in memory
+	 * @param bmpwidth Bitmap width
+	 * @param bmpheight Bitmap height
+	 * @param bmpdensity Bitmap bpp (use 2 as default)
+	 * @return true if the bitmap fits in memory false otherwise
+	 */
+	public static boolean checkBitmapFitsInMemory(long bmpwidth,long bmpheight, int bmpdensity ){
+	    long reqsize=bmpwidth*bmpheight*bmpdensity;
+	    long allocNativeHeap = Debug.getNativeHeapAllocatedSize();
 
+	    final long heapPad=(long) Math.max(4*1024*1024,Runtime.getRuntime().maxMemory()*0.1);
+	    if ((reqsize + allocNativeHeap + heapPad) >= Runtime.getRuntime().maxMemory())
+	    {
+	        return false;
+	    }
+	    return true;
+
+	}
+
+	public static class BitmapMemoryException extends Exception{
+		
+		public BitmapMemoryException(String message) {
+		super(message);
+		}
+		
+	}
+	
 }

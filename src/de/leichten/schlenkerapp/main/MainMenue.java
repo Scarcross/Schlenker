@@ -1,7 +1,6 @@
 package de.leichten.schlenkerapp.main;
 
 import utils.Constants;
-import utils.Utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +8,6 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.Menu;
 import android.view.Surface;
 import android.view.View;
 import android.view.animation.Animation;
@@ -22,15 +20,13 @@ import de.leichten.schlenkerapp.tasks.TestConnectionTask;
 public class MainMenue extends Activity {
 
 	private static final String TAG = "MainMenue";
-	private static final String MAIN_CALLED = "MAIN_CALLED";
-
-	private boolean wasCalled = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_menue);
 
+		
 		PreferenceManager.setDefaultValues(this, Constants.SHARED_PREF_NAME_MAIN, Context.MODE_PRIVATE, R.xml.preferences, false);
 		PreferenceManager.setDefaultValues(this, Constants.SHARED_PREF_NAME_FTP, Context.MODE_PRIVATE, R.xml.ftp_preferences, false);
 
@@ -43,10 +39,11 @@ public class MainMenue extends Activity {
 
 	@Override
 	protected void onResume() {
-		if (!wasCalled) {
+		boolean hasExtra = getIntent().hasExtra(Constants.MAIN_CALLED);
+		
+		if (!hasExtra) {
 			new TestConnectionTask(this).execute();
 			new StartupPendingTask(this).execute();
-			wasCalled = true;
 
 		}
 		
@@ -55,11 +52,7 @@ public class MainMenue extends Activity {
 			startAnimation();
 		super.onResume();
 	}
-	@Override
-	protected void onPause() {
-		this.wasCalled = true;
-		super.onPause();
-	}
+
 	
 	private boolean isHorizontalOriented(int orientation) {
 		return (orientation == 1 || orientation == 9);
@@ -85,12 +78,6 @@ public class MainMenue extends Activity {
 		return ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main_menue, menu);
-		return true;
-	}
 
 	public void buttonClicked(final View view) {
 		Intent intent = null;

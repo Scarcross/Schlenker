@@ -54,6 +54,7 @@ public class UtilFile {
 		return temp.toArray(new File[temp.size()]);
 	}
 	
+	
 	public static int getCountHistoryDir(Context context) {
 		File root = context.getFilesDir();
 		File[] fileList = root.listFiles();

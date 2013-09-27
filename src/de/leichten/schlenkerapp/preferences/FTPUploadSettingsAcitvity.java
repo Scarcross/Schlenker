@@ -4,23 +4,12 @@ import java.util.Map;
 import java.util.Set;
 
 import utils.Constants;
-import utils.Utils;
-import de.leichten.schlenkerapp.R;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
-import de.leichten.schlenkerapp.ftp.FTPUtil;
+import de.leichten.schlenkerapp.R;
 import de.leichten.schlenkerapp.tasks.TestConnectionTask;
 
 public class FTPUploadSettingsAcitvity extends PreferenceActivity implements OnSharedPreferenceChangeListener {

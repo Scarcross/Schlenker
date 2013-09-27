@@ -2,20 +2,15 @@ package de.leichten.schlenkerapp.ftp;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
-import org.apache.commons.net.ftp.FTPClient;
 
 import utils.Constants;
 import utils.UtilFile;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.widget.Toast;
 import de.leichten.schlenkerapp.R;
 import de.leichten.schlenkerapp.sd.SDDeleteFileTask;
+import de.leichten.schlenkerapp.sd.SDSaving;
 
 public class FTPUpload {
 
@@ -27,7 +22,7 @@ public class FTPUpload {
 	String password;
 	String conn_type;
 	Integer port;
-
+	
 	boolean fromPending;
 	boolean increasing;
 
@@ -46,16 +41,20 @@ public class FTPUpload {
 	public boolean uploadFiles(File... files) {
 		extractPreferences();
 		if (FTPUtil.ftpConnect(host, username, password, port)) {
-			decideAndUpload(files);
-			removeFromSD(files);
-		} else {
-			for (File file : files) {
-				startPendingProcedure(file);
-				return false;
+			try {
+				decideAndUploadCopy(files);
+				removeFromSD(files);
+			} catch (IOException e) {
+				startPendingProcedure(files);
+				e.printStackTrace();
 			}
+		} else {
+			startPendingProcedure(files);
+			return false;
+
 		}
 		FTPUtil.ftpDisconnect();
-		
+
 		return true;
 	}
 
@@ -66,16 +65,25 @@ public class FTPUpload {
 		}
 	}
 
-	private void decideAndUpload(File... files) {
+	private void decideAndUploadCopy(File... files) throws IOException {
 		for (File file : files) {
 			if (Constants.PROCEDURE_PARTIE.equals(procedure)) {
 				uploadPartie(file);
 			} else if (Constants.PROCEDURE_ARTICLE.equals(procedure)) {
 				uploadArticle(file);
 			}
+				decideSDCopy(file);
 			if (fromPending) {
 				deletePending(file);
 			}
+		}
+	}
+
+	private void decideSDCopy(File file) {
+		SharedPreferences prefsMain = context.getSharedPreferences(Constants.SHARED_PREF_NAME_MAIN, Context.MODE_PRIVATE);
+
+		if (prefsMain.getBoolean(context.getResources().getString(R.string.key_art_copy_sd), false)) {
+			new SDSaving(this.context, this.procedure).saveSD(file.getAbsoluteFile());
 		}
 	}
 
@@ -83,24 +91,25 @@ public class FTPUpload {
 		file.delete();
 	}
 
-	private void startPendingProcedure(File file) {
-		File pending;
+	private void startPendingProcedure(File[] files) {
+		for (File file : files) {
+			File pending;
 
-		if (Constants.PROCEDURE_PARTIE.equals(procedure)) {
-			pending = new File(context.getFilesDir() + Constants.PARTIE_UPLOAD_PENDING, file.getName());
-		} else {
-			pending = new File(context.getFilesDir() + Constants.ARTICLE_UPLOAD_PENDING, file.getName());
+			if (Constants.PROCEDURE_PARTIE.equals(procedure)) {
+				pending = new File(context.getFilesDir() + Constants.PARTIE_UPLOAD_PENDING, file.getName());
+			} else {
+				pending = new File(context.getFilesDir() + Constants.ARTICLE_UPLOAD_PENDING, file.getName());
+			}
+			try {
+				pending.getParentFile().mkdirs();
+				UtilFile.copyFile(file, pending);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		try {
-			boolean mkdirs = pending.getParentFile().mkdirs();
-			UtilFile.copyFile(file, pending);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
 	}
 
-	private void uploadArticle(File file) {
+	private void uploadArticle(File file) throws IOException {
 		try {
 			FTPUtil.ftpCreateDirectoryTree(FTP_ARTICLE_PATH);
 		} catch (IOException e) {
@@ -141,7 +150,7 @@ public class FTPUpload {
 		return original;
 	}
 
-	private void uploadPartie(File file) {
+	private void uploadPartie(File file) throws IOException {
 		try {
 			FTPUtil.ftpCreateDirectoryTree(FTP_PARTIE_PATH);
 		} catch (IOException e) {

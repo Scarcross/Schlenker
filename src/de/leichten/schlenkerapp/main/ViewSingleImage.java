@@ -1,17 +1,8 @@
 package de.leichten.schlenkerapp.main;
 
-import java.io.File;
-
-import utils.BitmapHelpers;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.leichten.schlenkerapp.R;
@@ -65,12 +56,7 @@ public class ViewSingleImage extends Activity {
 		MemoryCache.getInstance().remove(d[position]);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.view_single_image, menu);
-		return true;
-	}
+	
 
 	
 

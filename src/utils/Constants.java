@@ -15,4 +15,9 @@ public class Constants {
 	
 	public static final String PARTIE_DELETE_PENDING = "/Pending/Delete/Partie";
 	public static final String ARTICLE_DELETE_PENDING = "/Pending/Delete/Article";
+
+
+
+	public static final String MAIN_CALLED = "MAIN_CALLED";
+
 }

@@ -1,12 +1,9 @@
 package de.leichten.schlenkerapp.ftp;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -110,8 +107,8 @@ public class FTPUtil {
     // Method to create new directory:
     public static boolean ftpMakeDirectory(String new_dir_path) {
         try {
-        	String status2 = mFTPClient.getStatus();
-            boolean status = mFTPClient.makeDirectory(new_dir_path);
+        	
+        	boolean status = mFTPClient.makeDirectory(new_dir_path);
             return status;
         } catch (Exception e) {
             Log.d(TAG, "Error: could not create new directory named " + new_dir_path);
@@ -157,14 +154,11 @@ public class FTPUtil {
     }
 
     // Method to delete a file:
-    public static boolean ftpRemoveFile(String filePath) {
-        try {
+    public static boolean ftpRemoveFile(String filePath) throws IOException {
+
             boolean status = mFTPClient.deleteFile(filePath);
             return status;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-		return false;
+        
     }
 
     // Method to rename a file:
@@ -197,10 +191,9 @@ public class FTPUtil {
     }
 
     // Method to upload a file to FTP server:
-    public static boolean ftpUpload(String srcFilePath, String desFileName,
-            String desDirectory) {
+    public static boolean ftpUpload(String srcFilePath, String desFileName, String desDirectory) throws IOException {
         boolean status = false;
-        try {
+        
             FileInputStream srcFileStream = new FileInputStream(srcFilePath);
             BufferedInputStream bufferedInputStream = new BufferedInputStream(srcFileStream);
             // change working directory to the destination directory
@@ -210,11 +203,7 @@ public class FTPUtil {
 
             srcFileStream.close();
             return status;
-        } catch (Exception e) {
-            Log.d(TAG, "upload failed");
-        }
-
-        return status;
+        
     }
 
 	public static String[] ftpGetFileList(String dir_path) {

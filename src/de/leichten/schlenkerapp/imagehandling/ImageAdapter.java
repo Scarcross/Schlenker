@@ -1,19 +1,16 @@
 package de.leichten.schlenkerapp.imagehandling;
 
-import de.leichten.schlenkerapp.R;
 import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import de.leichten.schlenkerapp.R;
 
 public class ImageAdapter extends BaseAdapter{
 
